@@ -2,6 +2,8 @@
 
 A full-stack web application that helps hostel students track their daily nutrition intake, detect deficiencies, get budget-aware snack suggestions, and generate weekly health reports — all powered by AI.
 
+> ✨ **New:** Premium Minimalist Light Mode UI — featuring glassmorphism cards, Plus Jakarta Sans typography, gradient accents, and smooth micro-animations.
+
 ## 🚀 Tech Stack
 
 | Layer          | Technology                              |
