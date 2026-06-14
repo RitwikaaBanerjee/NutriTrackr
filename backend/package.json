@@ -1,0 +1,21 @@
+{
+  "name": "hostel-nutrition-backend",
+  "version": "1.0.0",
+  "description": "AI-Powered Hostel Nutrition & Health Monitoring System - Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "mongoose": "^8.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "firebase-admin": "^13.0.0",
+    "@google/generative-ai": "^0.21.0",
+    "pdfkit": "^0.15.0",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3"
+  }
+}
