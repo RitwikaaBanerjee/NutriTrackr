@@ -181,20 +181,20 @@ export default function AddMeal() {
       </h1>
 
       {/* ─── Date Picker ─── */}
-      <div className="glass rounded-2xl p-4">
-        <label className="text-sm text-gray-400 mb-2 block">Date</label>
+      <div className="glass glass-card-hover rounded-2xl p-5 border border-white/5">
+        <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-2 block">Date</label>
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="bg-white/5 border border-white/10 text-white rounded-xl px-4 py-2.5 text-sm w-full"
+          className="bg-zinc-900/50 border border-zinc-800 text-white rounded-xl px-4 py-2.5 text-sm w-full focus:border-indigo-500/40"
         />
       </div>
 
       {/* ─── Meal Type Selector ─── */}
-      <div className="glass rounded-2xl p-4">
-        <label className="text-sm text-gray-400 mb-3 block">Meal Type</label>
-        <div className="grid grid-cols-4 gap-2">
+      <div className="glass glass-card-hover rounded-2xl p-5 border border-white/5">
+        <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-3 block">Meal Type</label>
+        <div className="grid grid-cols-4 gap-2.5">
           {mealTypes.map((type) => {
             const isActive = mealType === type.id;
             const colors = colorMap[type.color];
@@ -202,12 +202,12 @@ export default function AddMeal() {
               <button
                 key={type.id}
                 onClick={() => setMealType(type.id)}
-                className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all duration-200 ${
-                  isActive ? `${colors.active} scale-105` : `${colors.inactive} hover:bg-white/5`
+                className={`flex flex-col items-center gap-1.5 p-3.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                  isActive ? `${colors.active} scale-105 shadow-md` : `${colors.inactive} hover:bg-white/5 hover:border-zinc-800`
                 }`}
               >
-                <type.icon size={20} />
-                <span className="text-xs font-medium">{type.label}</span>
+                <type.icon size={18} />
+                <span className="text-xs font-semibold">{type.label}</span>
               </button>
             );
           })}
@@ -218,36 +218,36 @@ export default function AddMeal() {
       <div className="flex gap-2">
         <button
           onClick={() => setInputMode('text')}
-          className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
+          className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
             inputMode === 'text'
-              ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/50'
-              : 'glass text-gray-400 hover:text-white'
+              ? 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-md shadow-indigo-500/5'
+              : 'glass border-white/5 text-zinc-400 hover:text-white'
           }`}
         >
-          ✍️ Text Input
+          ✍️ Text Description
         </button>
         <button
           onClick={() => setInputMode('image')}
-          className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
+          className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
             inputMode === 'image'
-              ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/50'
-              : 'glass text-gray-400 hover:text-white'
+              ? 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-md shadow-indigo-500/5'
+              : 'glass border-white/5 text-zinc-400 hover:text-white'
           }`}
         >
-          📸 Image Upload
+          📸 Food Photo
         </button>
       </div>
 
       {/* ─── Text Input Mode ─── */}
       {inputMode === 'text' && (
-        <div className="glass rounded-2xl p-5 space-y-4">
+        <div className="glass rounded-2xl p-5 space-y-4 border border-white/5">
           <textarea
             id="food-text-input"
             value={foodText}
             onChange={(e) => setFoodText(e.target.value)}
             placeholder="Describe your meal... e.g., 2 rotis with dal, rice, sabzi"
             rows={4}
-            className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl p-4 text-sm resize-none transition-all"
+            className="w-full bg-zinc-900/50 border border-zinc-800 text-zinc-100 placeholder-zinc-500 rounded-xl p-4 text-sm resize-none transition-all focus:border-indigo-500/40"
           />
           <button
             id="analyze-text-btn"
@@ -360,7 +360,7 @@ export default function AddMeal() {
           )}
 
           {/* Editable nutrient fields */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
             {[
               { key: 'calories', label: 'Calories', unit: 'kcal' },
               { key: 'protein', label: 'Protein', unit: 'g' },
@@ -369,24 +369,24 @@ export default function AddMeal() {
               { key: 'iron', label: 'Iron', unit: 'mg' },
             ].map(({ key, label, unit }) => (
               <div key={key}>
-                <label className="text-xs text-gray-400 mb-1 block">{label} ({unit})</label>
+                <label className="text-[11px] font-semibold text-zinc-400 mb-1 block uppercase tracking-wider">{label} ({unit})</label>
                 <input
                   type="number"
                   value={Math.round(nutrients[key] || 0)}
                   onChange={(e) =>
                     setNutrients((prev) => ({ ...prev, [key]: Number(e.target.value) }))
                   }
-                  className="w-full bg-white/5 border border-white/10 text-white rounded-xl px-3 py-2 text-sm"
+                  className="w-full bg-zinc-900/50 border border-zinc-800 text-white rounded-xl px-3 py-2 text-sm focus:border-indigo-500/40"
                 />
               </div>
             ))}
             <div>
-              <label className="text-xs text-gray-400 mb-1 block">Cost (₹)</label>
+              <label className="text-[11px] font-semibold text-zinc-400 mb-1 block uppercase tracking-wider">Cost (₹)</label>
               <input
                 type="number"
                 value={estimatedCost}
                 onChange={(e) => setEstimatedCost(Number(e.target.value))}
-                className="w-full bg-white/5 border border-white/10 text-white rounded-xl px-3 py-2 text-sm"
+                className="w-full bg-zinc-900/50 border border-zinc-800 text-white rounded-xl px-3 py-2 text-sm focus:border-indigo-500/40"
               />
             </div>
           </div>

@@ -136,9 +136,9 @@ export default function Dashboard() {
         </div>
         <Link
           to="/add-meal"
-          className="flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-all"
+          className="flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-indigo-500/10 cursor-pointer active:scale-[0.98]"
         >
-          <PlusCircle size={18} />
+          <PlusCircle size={16} />
           Add Meal
         </Link>
       </div>
@@ -161,24 +161,24 @@ export default function Dashboard() {
       </div>
 
       {/* ─── Budget Tracker ─── */}
-      <div className="glass rounded-2xl p-5">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-gray-300 flex items-center gap-2">
-            <Wallet size={16} className="text-green-400" />
+      <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
+        <div className="flex items-center justify-between mb-3.5">
+          <h3 className="text-xs font-semibold text-zinc-400 tracking-wider uppercase flex items-center gap-2">
+            <Wallet size={14} className="text-emerald-400" />
             Daily Budget
           </h3>
-          <span className="text-sm text-gray-400">
+          <span className="text-xs font-bold text-zinc-400 bg-zinc-900 border border-zinc-800 px-2 py-1 rounded-md">
             ₹{spent} / ₹{budget}
           </span>
         </div>
-        <div className="w-full bg-white/10 rounded-full h-2.5">
+        <div className="w-full bg-zinc-800/80 rounded-full h-1.5 overflow-hidden">
           <div
-            className={`h-2.5 rounded-full ${budgetColor} transition-all duration-500`}
+            className={`h-1.5 rounded-full ${budgetColor === 'bg-green-500' ? 'bg-emerald-500' : budgetColor === 'bg-amber-500' ? 'bg-amber-500' : 'bg-rose-500'} transition-all duration-500`}
             style={{ width: `${Math.min(budgetPercentage, 100)}%` }}
           />
         </div>
         {budgetPercentage > 100 && (
-          <p className="text-red-400 text-xs mt-2">⚠ Budget exceeded by ₹{spent - budget}</p>
+          <p className="text-rose-400 text-xs font-medium mt-2.5">⚠ Budget exceeded by ₹{spent - budget}</p>
         )}
       </div>
 
@@ -190,11 +190,11 @@ export default function Dashboard() {
           </h2>
         </div>
         {meals.length === 0 ? (
-          <div className="glass rounded-2xl p-8 text-center">
-            <p className="text-gray-400 mb-3">No meals logged yet today 🍽️</p>
+          <div className="glass rounded-2xl p-10 text-center border border-white/5">
+            <p className="text-zinc-400 text-sm mb-3">No meals logged yet today 🍽️</p>
             <Link
               to="/add-meal"
-              className="text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+              className="text-indigo-400 hover:text-indigo-300 text-xs font-semibold uppercase tracking-wider"
             >
               Log your first meal →
             </Link>
@@ -217,12 +217,12 @@ export default function Dashboard() {
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {suggestions.map((s, i) => (
-              <div key={i} className="glass rounded-2xl p-4 hover:scale-[1.02] transition-transform">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-white font-medium text-sm">{s.name}</span>
-                  <span className="text-green-400 text-xs font-medium">₹{s.estimatedCost}</span>
+              <div key={i} className="glass glass-card-hover rounded-2xl p-5 border border-white/5">
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-zinc-900 font-bold text-sm font-display">{s.name}</span>
+                  <span className="text-emerald-400 text-xs font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/10">₹{s.estimatedCost}</span>
                 </div>
-                <p className="text-gray-400 text-xs">{s.reason}</p>
+                <p className="text-zinc-400 text-xs leading-relaxed font-medium">{s.reason}</p>
               </div>
             ))}
           </div>
@@ -231,9 +231,9 @@ export default function Dashboard() {
 
       {/* ─── Weekly Trend Chart ─── */}
       {weeklyData.length > 0 && (
-        <div className="glass rounded-2xl p-5">
-          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <TrendingUp size={20} className="text-indigo-400" />
+        <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
+          <h2 className="text-base font-bold text-white mb-5 flex items-center gap-2 font-display">
+            <TrendingUp size={18} className="text-indigo-400" />
             Weekly Calorie Trend
           </h2>
           <ResponsiveContainer width="100%" height={200}>
@@ -250,19 +250,21 @@ export default function Dashboard() {
               <YAxis stroke="#4b5563" fontSize={12} />
               <Tooltip
                 contentStyle={{
-                  background: '#1a1a2e',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: '#18181b',
+                  border: '1px solid rgba(255,255,255,0.06)',
                   borderRadius: '12px',
-                  color: '#e0e0e0',
+                  color: '#f4f4f5',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '12px',
                 }}
               />
               <Line
                 type="monotone"
                 dataKey="calories"
-                stroke="#6366f1"
+                stroke="#8b5cf6"
                 strokeWidth={2}
-                dot={{ fill: '#6366f1', r: 4 }}
-                activeDot={{ r: 6, fill: '#8b5cf6' }}
+                dot={{ fill: '#8b5cf6', r: 3 }}
+                activeDot={{ r: 5, fill: '#c084fc' }}
               />
             </LineChart>
           </ResponsiveContainer>

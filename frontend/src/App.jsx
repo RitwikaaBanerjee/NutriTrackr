@@ -44,11 +44,12 @@ export default function App() {
         toastOptions={{
           duration: 3000,
           style: {
-            background: '#1a1a2e',
-            color: '#e0e0e0',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '12px',
+            background: '#18181b',
+            color: '#f4f4f5',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            borderRadius: '14px',
             fontSize: '14px',
+            fontFamily: 'var(--font-sans)',
           },
           success: {
             iconTheme: { primary: '#22c55e', secondary: '#1a1a2e' },

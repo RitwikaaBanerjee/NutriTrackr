@@ -88,31 +88,24 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f0f23] via-[#1a1a2e] to-[#16213e] flex items-center justify-center px-4 relative overflow-hidden">
-      {/* ─── Floating Food Emojis ─── */}
-      {floatingItems.map((item, i) => (
-        <span
-          key={i}
-          className={`absolute ${item.size} opacity-20 animate-float select-none pointer-events-none`}
-          style={{
-            top: item.top,
-            left: item.left,
-            right: item.right,
-            bottom: item.bottom,
-            animationDelay: item.delay,
-          }}
-        >
-          {item.emoji}
-        </span>
-      ))}
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-[#f8f9fa]">
+      {/* ─── Premium Ambient Glows (Light Mode) ─── */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-indigo-500/[0.05] rounded-full blur-[140px] pointer-events-none select-none" />
+      <div className="absolute -bottom-20 right-10 w-[400px] h-[400px] bg-purple-500/[0.03] rounded-full blur-[120px] pointer-events-none select-none" />
+
+      {/* Dotted background overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000004_1px,transparent_1px),linear-gradient(to_bottom,#00000004_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       {/* ─── Login Card ─── */}
-      <div className="glass rounded-3xl p-8 w-full max-w-md animate-fade-in relative z-10">
+      <div className="glass rounded-2xl border border-zinc-200/50 p-8 w-full max-w-md shadow-xl relative z-10 backdrop-blur-3xl">
         {/* Branding */}
         <div className="text-center mb-8">
-          <h1 className="gradient-text text-4xl font-bold mb-2">NutriTrack</h1>
-          <p className="text-gray-400 text-sm">
-            Smart Hostel Nutrition Monitoring
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-500/5 border border-indigo-500/10 mb-4 shadow-sm">
+            <span className="text-2xl">🍽️</span>
+          </div>
+          <h1 className="gradient-text text-3xl font-extrabold tracking-tight mb-1">NutriTrack</h1>
+          <p className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">
+            Smart Hostel Nutrition & Health Monitoring
           </p>
         </div>
 
@@ -121,8 +114,8 @@ export default function Login() {
           {/* Email */}
           <div className="relative">
             <Mail
-              size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+              size={16}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400"
             />
             <input
               id="login-email"
@@ -130,15 +123,15 @@ export default function Login() {
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl py-3 pl-10 pr-4 text-sm transition-all"
+              className="w-full bg-white border border-zinc-200 text-zinc-900 placeholder-zinc-400 rounded-xl py-3 pl-11 pr-4 text-sm transition-all focus:border-indigo-500/50 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
             />
           </div>
 
           {/* Password */}
           <div className="relative">
             <Lock
-              size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+              size={16}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400"
             />
             <input
               id="login-password"
@@ -146,7 +139,7 @@ export default function Login() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl py-3 pl-10 pr-4 text-sm transition-all"
+              className="w-full bg-white border border-zinc-200 text-zinc-900 placeholder-zinc-400 rounded-xl py-3 pl-11 pr-4 text-sm transition-all focus:border-indigo-500/50 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
             />
           </div>
 
@@ -155,7 +148,7 @@ export default function Login() {
             id="login-submit"
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 shadow-lg shadow-indigo-600/10 active:scale-[0.98] cursor-pointer"
           >
             {loading ? (
               <span className="flex items-center gap-2">
@@ -164,7 +157,7 @@ export default function Login() {
               </span>
             ) : (
               <>
-                <LogIn size={18} />
+                <LogIn size={16} />
                 {isSignUp ? 'Create Account' : 'Sign In'}
               </>
             )}
@@ -172,11 +165,11 @@ export default function Login() {
         </form>
 
         {/* Toggle Sign In / Sign Up */}
-        <p className="text-center text-gray-400 text-sm mb-6">
+        <p className="text-center text-zinc-500 text-sm mb-6 font-medium">
           {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
           <button
             onClick={() => setIsSignUp(!isSignUp)}
-            className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+            className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors cursor-pointer"
           >
             {isSignUp ? 'Sign In' : 'Sign Up'}
           </button>
@@ -184,9 +177,9 @@ export default function Login() {
 
         {/* Divider */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="flex-1 h-px bg-white/10" />
-          <span className="text-gray-500 text-xs uppercase tracking-wider">or</span>
-          <div className="flex-1 h-px bg-white/10" />
+          <div className="flex-1 h-px bg-zinc-200" />
+          <span className="text-zinc-400 text-xs font-bold uppercase tracking-wider">or</span>
+          <div className="flex-1 h-px bg-zinc-200" />
         </div>
 
         {/* Google Sign-In */}
@@ -194,10 +187,10 @@ export default function Login() {
           id="google-login"
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full bg-white/10 border border-white/20 text-white font-medium py-3 rounded-xl hover:bg-white/15 transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-50"
+          className="w-full bg-white border border-zinc-200 hover:bg-zinc-50 hover:border-zinc-300 text-zinc-700 font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer shadow-sm"
         >
           {/* Google Icon SVG */}
-          <svg className="w-5 h-5" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />

@@ -8,10 +8,10 @@ import { Trash2, Clock } from 'lucide-react';
 
 // Meal type → badge color mapping
 const typeColors = {
-  breakfast: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  lunch: 'bg-green-500/20 text-green-400 border-green-500/30',
-  dinner: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-  snack: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  breakfast: 'bg-amber-50 text-amber-700 border-amber-200/50',
+  lunch: 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
+  dinner: 'bg-purple-50 text-purple-700 border-purple-200/50',
+  snack: 'bg-sky-50 text-sky-700 border-sky-200/50',
 };
 
 // Meal type emoji
@@ -33,7 +33,6 @@ export default function MealCard({ meal, onDelete }) {
     }
   };
 
-  // Format time from createdAt
   const time = meal.createdAt
     ? new Date(meal.createdAt).toLocaleTimeString('en-IN', {
         hour: '2-digit',
@@ -42,46 +41,46 @@ export default function MealCard({ meal, onDelete }) {
     : '';
 
   return (
-    <div className="glass rounded-2xl p-4 hover:-translate-y-1 transition-all duration-300 group">
+    <div className="glass glass-card-hover rounded-2xl p-5 border border-white/5 relative group">
       {/* Header: meal type + time + delete */}
-      <div className="flex items-center justify-between mb-3">
-        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium border ${colorClass}`}>
+      <div className="flex items-center justify-between mb-3.5">
+        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass}`}>
           {emoji} {meal.mealType?.charAt(0).toUpperCase() + meal.mealType?.slice(1)}
         </span>
         <div className="flex items-center gap-2">
           {time && (
-            <span className="flex items-center gap-1 text-gray-500 text-xs">
+            <span className="flex items-center gap-1.5 text-zinc-400 text-xs font-semibold">
               <Clock size={12} />
               {time}
             </span>
           )}
           <button
             onClick={handleDelete}
-            className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 transition-all p-1"
+            className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-all p-1 cursor-pointer"
           >
-            <Trash2 size={14} />
+            <Trash2 size={13} />
           </button>
         </div>
       </div>
 
       {/* Food description */}
-      <p className="text-gray-200 text-sm mb-3 leading-relaxed">
+      <p className="text-zinc-800 text-sm font-semibold mb-3.5 leading-relaxed">
         {meal.description}
       </p>
 
       {/* Nutrient pills */}
-      <div className="flex flex-wrap gap-2 mb-3">
-        <NutrientPill label="Cal" value={nutrients.calories} unit="" color="text-orange-400 bg-orange-500/10" />
-        <NutrientPill label="Pro" value={nutrients.protein} unit="g" color="text-blue-400 bg-blue-500/10" />
-        <NutrientPill label="Carb" value={nutrients.carbs} unit="g" color="text-purple-400 bg-purple-500/10" />
-        <NutrientPill label="Fat" value={nutrients.fat} unit="g" color="text-yellow-400 bg-yellow-500/10" />
-        <NutrientPill label="Iron" value={nutrients.iron} unit="mg" color="text-red-400 bg-red-500/10" />
+      <div className="flex flex-wrap gap-1.5 mb-3.5">
+        <NutrientPill label="Cal" value={nutrients.calories} unit="" color="text-orange-400 bg-orange-500/5 border border-orange-500/10" />
+        <NutrientPill label="Pro" value={nutrients.protein} unit="g" color="text-sky-400 bg-sky-500/5 border border-sky-500/10" />
+        <NutrientPill label="Carb" value={nutrients.carbs} unit="g" color="text-purple-400 bg-purple-500/5 border border-purple-500/10" />
+        <NutrientPill label="Fat" value={nutrients.fat} unit="g" color="text-amber-400 bg-amber-500/5 border border-amber-500/10" />
+        <NutrientPill label="Iron" value={nutrients.iron} unit="mg" color="text-rose-400 bg-rose-500/5 border border-rose-500/10" />
       </div>
 
       {/* Estimated cost */}
       {meal.estimatedCost > 0 && (
-        <p className="text-xs text-gray-500">
-          Estimated cost: <span className="text-green-400 font-medium">₹{meal.estimatedCost}</span>
+        <p className="text-[11px] text-zinc-500 font-medium">
+          Estimated cost: <span className="text-emerald-400 font-semibold">₹{meal.estimatedCost}</span>
         </p>
       )}
     </div>
@@ -91,7 +90,7 @@ export default function MealCard({ meal, onDelete }) {
 /** Small pill component showing a nutrient value */
 function NutrientPill({ label, value, unit, color }) {
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium ${color}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold border ${color}`}>
       {label}: {Math.round(value || 0)}{unit}
     </span>
   );

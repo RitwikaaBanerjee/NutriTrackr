@@ -125,7 +125,7 @@ export default function Reports() {
           id="download-pdf-btn"
           onClick={handleDownloadPdf}
           disabled={downloading}
-          className="flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50"
+          className="flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-indigo-500/10 cursor-pointer active:scale-[0.98] disabled:opacity-50"
         >
           {downloading ? (
             <>
@@ -134,7 +134,7 @@ export default function Reports() {
             </>
           ) : (
             <>
-              <Download size={16} />
+              <Download size={15} />
               Download PDF
             </>
           )}
@@ -142,33 +142,33 @@ export default function Reports() {
       </div>
 
       {/* ─── Date Range ─── */}
-      <div className="glass rounded-2xl px-5 py-3 flex items-center gap-2 w-fit">
-        <Calendar size={16} className="text-indigo-400" />
-        <span className="text-gray-300 text-sm">{dateRange}</span>
+      <div className="glass rounded-xl px-4 py-2 flex items-center gap-2 w-fit border border-white/5 bg-zinc-900/50">
+        <Calendar size={14} className="text-indigo-400" />
+        <span className="text-zinc-300 text-xs font-semibold">{dateRange}</span>
       </div>
 
       {/* ─── Nutrient Averages ─── */}
       {averages && (
         <div>
-          <h2 className="text-lg font-semibold text-white mb-3">Daily Averages</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <h2 className="text-sm font-bold text-zinc-400 tracking-wider uppercase mb-3.5">Daily Averages</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
             {[
-              { label: 'Calories', value: averages.calories, rec: 2200, unit: 'kcal', color: 'orange' },
-              { label: 'Protein', value: averages.protein, rec: 55, unit: 'g', color: 'blue' },
-              { label: 'Carbs', value: averages.carbs, rec: 275, unit: 'g', color: 'purple' },
-              { label: 'Fat', value: averages.fat, rec: 60, unit: 'g', color: 'yellow' },
-              { label: 'Iron', value: averages.iron, rec: 19, unit: 'mg', color: 'red' },
+              { label: 'Calories', value: averages.calories, rec: 2200, unit: 'kcal' },
+              { label: 'Protein', value: averages.protein, rec: 55, unit: 'g' },
+              { label: 'Carbs', value: averages.carbs, rec: 275, unit: 'g' },
+              { label: 'Fat', value: averages.fat, rec: 60, unit: 'g' },
+              { label: 'Iron', value: averages.iron, rec: 19, unit: 'mg' },
             ].map((item) => {
               const pct = Math.round(((item.value || 0) / item.rec) * 100);
-              const barColor = pct >= 75 ? 'bg-green-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
+              const barColor = pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500';
               return (
-                <div key={item.label} className="glass rounded-2xl p-4">
-                  <p className="text-xs text-gray-400 mb-1">{item.label}</p>
-                  <p className="text-xl font-bold text-white">{Math.round(item.value || 0)}</p>
-                  <p className="text-xs text-gray-500 mb-2">/ {item.rec} {item.unit}</p>
-                  <div className="w-full bg-white/10 rounded-full h-1.5">
+                <div key={item.label} className="glass glass-card-hover rounded-2xl p-5 border border-white/5">
+                  <p className="text-[10px] font-semibold text-zinc-400 tracking-wider uppercase mb-1">{item.label}</p>
+                  <p className="text-2xl font-extrabold text-white">{Math.round(item.value || 0)}</p>
+                  <p className="text-xs text-zinc-500 font-medium mb-3">/ {item.rec} {item.unit}</p>
+                  <div className="w-full bg-zinc-800/80 rounded-full h-1 overflow-hidden">
                     <div
-                      className={`h-1.5 rounded-full ${barColor} transition-all`}
+                      className={`h-1 rounded-full ${barColor} transition-all`}
                       style={{ width: `${Math.min(pct, 100)}%` }}
                     />
                   </div>
@@ -180,26 +180,26 @@ export default function Reports() {
       )}
 
       {/* ─── Calorie Trend Chart ─── */}
-      <div className="glass rounded-2xl p-5">
-        <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-          <TrendingUp size={20} className="text-indigo-400" />
+      <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
+        <h2 className="text-base font-bold text-white mb-5 flex items-center gap-2 font-display">
+          <TrendingUp size={18} className="text-indigo-400" />
           Calorie Trend
         </h2>
         <ResponsiveContainer width="100%" height={250}>
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorCalories" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <XAxis dataKey="date" stroke="#4b5563" fontSize={12} />
-            <YAxis stroke="#4b5563" fontSize={12} />
+            <XAxis dataKey="date" stroke="#4b5563" fontSize={11} />
+            <YAxis stroke="#4b5563" fontSize={11} />
             <Tooltip content={<CustomTooltip />} />
             <Area
               type="monotone"
               dataKey="calories"
-              stroke="#6366f1"
+              stroke="#8b5cf6"
               strokeWidth={2}
               fill="url(#colorCalories)"
               name="Calories"
@@ -209,17 +209,17 @@ export default function Reports() {
       </div>
 
       {/* ─── Macro Breakdown Chart ─── */}
-      <div className="glass rounded-2xl p-5">
-        <h2 className="text-lg font-semibold text-white mb-4">Macro Breakdown by Day</h2>
+      <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
+        <h2 className="text-base font-bold text-white mb-5 font-display">Macro Breakdown by Day</h2>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={chartData}>
-            <XAxis dataKey="date" stroke="#4b5563" fontSize={12} />
-            <YAxis stroke="#4b5563" fontSize={12} />
+            <XAxis dataKey="date" stroke="#4b5563" fontSize={11} />
+            <YAxis stroke="#4b5563" fontSize={11} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend wrapperStyle={{ color: '#9ca3af', fontSize: '12px' }} />
-            <Bar dataKey="protein" name="Protein" fill="#6366f1" radius={[4, 4, 0, 0]} />
+            <Legend wrapperStyle={{ color: '#9ca3af', fontSize: '11px', fontFamily: 'var(--font-sans)' }} />
+            <Bar dataKey="protein" name="Protein" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             <Bar dataKey="carbs" name="Carbs" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="fat" name="Fat" fill="#a78bfa" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="fat" name="Fat" fill="#f59e0b" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -227,37 +227,37 @@ export default function Reports() {
       {/* ─── Deficiency Patterns ─── */}
       {deficiencies && deficiencies.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-            <AlertTriangle size={20} className="text-amber-400" />
+          <h2 className="text-sm font-bold text-zinc-400 tracking-wider uppercase mb-3 flex items-center gap-2">
+            <AlertTriangle size={18} className="text-amber-400" />
             Deficiency Patterns
           </h2>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3.5 sm:grid-cols-2">
             {deficiencies.map((d, i) => (
               <div
                 key={i}
-                className={`glass rounded-2xl p-4 border-l-4 ${
+                className={`glass glass-card-hover rounded-2xl p-5 border border-white/5 border-l-4 ${
                   d.severity === 'critical'
-                    ? 'border-l-red-500'
+                    ? 'border-l-rose-500'
                     : d.severity === 'moderate'
                     ? 'border-l-amber-500'
                     : 'border-l-yellow-500'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-white font-medium text-sm capitalize">{d.nutrient}</span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-zinc-900 font-bold text-sm capitalize font-display">{d.nutrient}</span>
                   <span
-                    className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
                       d.severity === 'critical'
-                        ? 'bg-red-500/20 text-red-400'
+                        ? 'bg-rose-500/10 text-rose-700 border-rose-500/10'
                         : d.severity === 'moderate'
-                        ? 'bg-amber-500/20 text-amber-400'
-                        : 'bg-yellow-500/20 text-yellow-400'
+                        ? 'bg-amber-500/10 text-amber-700 border-amber-500/10'
+                        : 'bg-yellow-500/10 text-yellow-700 border-yellow-500/10'
                     }`}
                   >
                     {d.severity}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-zinc-500 font-semibold">
                   {d.current} / {d.recommended} ({d.percentage}%)
                 </p>
               </div>
@@ -268,12 +268,12 @@ export default function Reports() {
 
       {/* ─── AI Health Summary ─── */}
       {summary && (
-        <div className="glass rounded-2xl p-5">
-          <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-            <Brain size={20} className="text-purple-400" />
+        <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
+          <h2 className="text-base font-bold text-white mb-3 flex items-center gap-2 font-display">
+            <Brain size={18} className="text-purple-400" />
             AI Health Summary
           </h2>
-          <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">{summary}</p>
+          <p className="text-zinc-700 text-sm leading-relaxed whitespace-pre-line font-semibold">{summary}</p>
         </div>
       )}
     </div>

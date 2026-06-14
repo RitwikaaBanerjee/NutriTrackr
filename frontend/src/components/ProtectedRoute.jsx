@@ -18,7 +18,7 @@ export default function ProtectedRoute() {
 
   // Authenticated → render layout with Navbar + child routes
   return (
-    <div className="min-h-screen bg-[#0f0f23]">
+    <div className="min-h-screen bg-transparent">
       <Navbar />
       {/* Main content area with top padding for fixed navbar */}
       <main className="pt-20 px-4 pb-8 max-w-7xl mx-auto">

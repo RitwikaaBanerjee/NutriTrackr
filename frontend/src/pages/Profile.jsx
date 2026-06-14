@@ -125,17 +125,17 @@ export default function Profile() {
       </h1>
 
       {/* ─── Completion Indicator ─── */}
-      <div className="glass rounded-2xl p-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-400">Profile Completion</span>
-          <span className={`text-sm font-medium ${completionPercent === 100 ? 'text-green-400' : 'text-amber-400'}`}>
+      <div className="glass glass-card-hover rounded-2xl p-5 border border-white/5">
+        <div className="flex items-center justify-between mb-2.5">
+          <span className="text-xs font-semibold text-zinc-400 tracking-wider uppercase">Profile Completion</span>
+          <span className={`text-xs font-bold ${completionPercent === 100 ? 'text-emerald-400' : 'text-amber-400'}`}>
             {filledCount} of {fields.length} fields
           </span>
         </div>
-        <div className="w-full bg-white/10 rounded-full h-2">
+        <div className="w-full bg-zinc-800/80 rounded-full h-1.5 overflow-hidden">
           <div
-            className={`h-2 rounded-full transition-all duration-500 ${
-              completionPercent === 100 ? 'bg-green-500' : 'bg-amber-500'
+            className={`h-1.5 rounded-full transition-all duration-500 ${
+              completionPercent === 100 ? 'bg-emerald-500' : 'bg-amber-500'
             }`}
             style={{ width: `${completionPercent}%` }}
           />
@@ -144,39 +144,43 @@ export default function Profile() {
 
       {/* ─── BMI Card ─── */}
       {bmi && (
-        <div className="glass rounded-2xl p-5 flex items-center gap-4">
-          <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center">
-            <Scale size={24} className="text-indigo-400" />
+        <div className="glass glass-card-hover rounded-2xl p-5 flex items-center gap-4 border border-white/5">
+          <div className="w-12 h-12 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center">
+            <Scale size={20} className="text-indigo-400" />
           </div>
           <div>
-            <p className="text-sm text-gray-400">Body Mass Index (BMI)</p>
-            <p className="text-2xl font-bold text-white">{bmi}</p>
+            <p className="text-[10px] font-semibold text-zinc-500 tracking-wider uppercase">Body Mass Index (BMI)</p>
+            <p className="text-2xl font-extrabold text-white">{bmi}</p>
           </div>
-          <span className={`ml-auto text-sm font-medium ${getBmiCategory(bmi).color}`}>
+          <span className={`ml-auto text-xs font-bold px-2.5 py-1 rounded-md border bg-zinc-900 border-zinc-800 ${
+            getBmiCategory(bmi).color.includes('green') ? 'text-emerald-400 border-emerald-500/10' :
+            getBmiCategory(bmi).color.includes('blue') ? 'text-sky-400 border-sky-500/10' :
+            getBmiCategory(bmi).color.includes('amber') ? 'text-amber-400 border-amber-500/10' : 'text-rose-400 border-rose-500/10'
+          }`}>
             {getBmiCategory(bmi).label}
           </span>
         </div>
       )}
 
       {/* ─── Profile Form ─── */}
-      <div className="glass rounded-2xl p-6 space-y-5">
+      <div className="glass glass-card-hover rounded-2xl p-6 space-y-5 border border-white/5">
         {/* Name */}
         <div>
-          <label className="text-sm text-gray-400 mb-1.5 block">Full Name</label>
+          <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-1.5 block">Full Name</label>
           <input
             id="profile-name"
             type="text"
             value={form.name}
             onChange={(e) => handleChange('name', e.target.value)}
             placeholder="Enter your name"
-            className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl px-4 py-3 text-sm transition-all"
+            className="w-full bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl px-4 py-3 text-sm focus:border-indigo-500/40"
           />
         </div>
 
         {/* Age + Gender (side by side) */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-sm text-gray-400 mb-1.5 block">Age</label>
+            <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-1.5 block">Age</label>
             <input
               id="profile-age"
               type="number"
@@ -185,21 +189,21 @@ export default function Profile() {
               value={form.age}
               onChange={(e) => handleChange('age', e.target.value)}
               placeholder="e.g., 20"
-              className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl px-4 py-3 text-sm transition-all"
+              className="w-full bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl px-4 py-3 text-sm focus:border-indigo-500/40"
             />
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-1.5 block">Gender</label>
+            <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-1.5 block">Gender</label>
             <select
               id="profile-gender"
               value={form.gender}
               onChange={(e) => handleChange('gender', e.target.value)}
-              className="w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-3 text-sm transition-all appearance-none"
+              className="w-full bg-zinc-900/50 border border-zinc-800 text-white rounded-xl px-4 py-3 text-sm focus:border-indigo-500/40 appearance-none cursor-pointer"
             >
-              <option value="" className="bg-[#1a1a2e]">Select</option>
-              <option value="male" className="bg-[#1a1a2e]">Male</option>
-              <option value="female" className="bg-[#1a1a2e]">Female</option>
-              <option value="other" className="bg-[#1a1a2e]">Other</option>
+              <option value="" className="bg-[#18181b]">Select</option>
+              <option value="male" className="bg-[#18181b]">Male</option>
+              <option value="female" className="bg-[#18181b]">Female</option>
+              <option value="other" className="bg-[#18181b]">Other</option>
             </select>
           </div>
         </div>
@@ -207,7 +211,7 @@ export default function Profile() {
         {/* Height + Weight */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-sm text-gray-400 mb-1.5 block">Height (cm)</label>
+            <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-1.5 block">Height (cm)</label>
             <input
               id="profile-height"
               type="number"
@@ -216,11 +220,11 @@ export default function Profile() {
               value={form.height}
               onChange={(e) => handleChange('height', e.target.value)}
               placeholder="e.g., 170"
-              className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl px-4 py-3 text-sm transition-all"
+              className="w-full bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl px-4 py-3 text-sm focus:border-indigo-500/40"
             />
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-1.5 block">Weight (kg)</label>
+            <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-1.5 block">Weight (kg)</label>
             <input
               id="profile-weight"
               type="number"
@@ -229,14 +233,14 @@ export default function Profile() {
               value={form.weight}
               onChange={(e) => handleChange('weight', e.target.value)}
               placeholder="e.g., 65"
-              className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl px-4 py-3 text-sm transition-all"
+              className="w-full bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl px-4 py-3 text-sm focus:border-indigo-500/40"
             />
           </div>
         </div>
 
         {/* Activity Level */}
         <div>
-          <label className="text-sm text-gray-400 mb-1.5 block flex items-center gap-1.5">
+          <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-1.5 block flex items-center gap-1.5">
             <Activity size={14} />
             Activity Level
           </label>
@@ -244,10 +248,10 @@ export default function Profile() {
             id="profile-activity"
             value={form.activityLevel}
             onChange={(e) => handleChange('activityLevel', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-3 text-sm transition-all appearance-none"
+            className="w-full bg-zinc-900/50 border border-zinc-800 text-white rounded-xl px-4 py-3 text-sm focus:border-indigo-500/40 appearance-none cursor-pointer"
           >
             {activityOptions.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-[#1a1a2e]">
+              <option key={opt.value} value={opt.value} className="bg-[#18181b]">
                 {opt.label} — {opt.desc}
               </option>
             ))}
@@ -256,7 +260,7 @@ export default function Profile() {
 
         {/* Daily Budget */}
         <div>
-          <label className="text-sm text-gray-400 mb-1.5 block">Daily Budget (₹)</label>
+          <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-1.5 block">Daily Budget (₹)</label>
           <input
             id="profile-budget"
             type="number"
@@ -265,13 +269,13 @@ export default function Profile() {
             value={form.dailyBudget}
             onChange={(e) => handleChange('dailyBudget', e.target.value)}
             placeholder="e.g., 150"
-            className="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl px-4 py-3 text-sm transition-all"
+            className="w-full bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 rounded-xl px-4 py-3 text-sm focus:border-indigo-500/40"
           />
         </div>
 
         {/* Food Preference (radio cards) */}
         <div>
-          <label className="text-sm text-gray-400 mb-3 block">Food Preference</label>
+          <label className="text-xs font-semibold text-zinc-400 tracking-wider uppercase mb-3 block">Food Preference</label>
           <div className="grid grid-cols-3 gap-3">
             {[
               { value: 'veg', emoji: '🥬', label: 'Vegetarian' },
@@ -282,14 +286,14 @@ export default function Profile() {
                 key={opt.value}
                 type="button"
                 onClick={() => handleChange('foodPreference', opt.value)}
-                className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all duration-200 ${
+                className={`flex flex-col items-center gap-1.5 p-3.5 rounded-xl border transition-all duration-200 cursor-pointer ${
                   form.foodPreference === opt.value
-                    ? 'bg-indigo-500/20 border-indigo-500 text-indigo-400 scale-105'
-                    : 'border-white/10 text-gray-400 hover:bg-white/5'
+                    ? 'bg-indigo-500/10 border-indigo-500/50 text-indigo-300 scale-105 shadow-md shadow-indigo-500/5'
+                    : 'border-zinc-800 text-zinc-400 hover:bg-white/5 hover:border-zinc-700'
                 }`}
               >
                 <span className="text-2xl">{opt.emoji}</span>
-                <span className="text-xs font-medium">{opt.label}</span>
+                <span className="text-xs font-semibold">{opt.label}</span>
               </button>
             ))}
           </div>
@@ -300,7 +304,7 @@ export default function Profile() {
           id="save-profile-btn"
           onClick={handleSave}
           disabled={saving}
-          className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+          className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 shadow-lg shadow-indigo-500/20 active:scale-[0.98] cursor-pointer"
         >
           {saving ? (
             <>
@@ -309,7 +313,7 @@ export default function Profile() {
             </>
           ) : (
             <>
-              <Save size={18} />
+              <Save size={16} />
               Save Profile
             </>
           )}
