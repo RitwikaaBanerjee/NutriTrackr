@@ -3,6 +3,7 @@
  *
  * Main hub showing today's nutrition summary, alerts, meals,
  * budget tracking, snack suggestions, and weekly trends.
+ * Styled for premium light-mode frosted glass aesthetic.
  */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -14,6 +15,16 @@ import MealCard from '../components/MealCard';
 import { Flame, Beef, Wheat, Droplets, PlusCircle, TrendingUp, Wallet, Lightbulb } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
+
+/* ── Shared frosted card style ── */
+const card = {
+  background: 'rgba(255,255,255,0.55)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1px solid rgba(255,255,255,0.6)',
+  boxShadow: '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)',
+  borderRadius: '18px',
+};
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -33,7 +44,6 @@ export default function Dashboard() {
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      // Fetch all data in parallel
       const [profileRes, mealsRes, alertsRes, weeklyRes] = await Promise.allSettled([
         api.getProfile(),
         api.getTodayMeals(),
@@ -41,25 +51,14 @@ export default function Dashboard() {
         api.getWeeklyReport(),
       ]);
 
-      // Profile
-      if (profileRes.status === 'fulfilled') {
-        setProfile(profileRes.value.data.data);
-      }
-
-      // Today's meals
+      if (profileRes.status === 'fulfilled') setProfile(profileRes.value.data.data);
       if (mealsRes.status === 'fulfilled') {
         const data = mealsRes.value.data.data;
         setMeals(data.meals || []);
         setTotals(data.totals || { calories: 0, protein: 0, carbs: 0, fat: 0, iron: 0 });
         if (data.recommended) setRecommended(data.recommended);
       }
-
-      // Alerts
-      if (alertsRes.status === 'fulfilled') {
-        setAlerts(alertsRes.value.data.data || []);
-      }
-
-      // Weekly report (for chart + suggestions)
+      if (alertsRes.status === 'fulfilled') setAlerts(alertsRes.value.data.data || []);
       if (weeklyRes.status === 'fulfilled') {
         const report = weeklyRes.value.data.data;
         setWeeklyData(report?.dailyBreakdown || []);
@@ -72,23 +71,20 @@ export default function Dashboard() {
     }
   };
 
-  // Handle meal deletion
   const handleDeleteMeal = async (mealId) => {
     try {
       await api.deleteMeal(mealId);
       toast.success('Meal deleted');
-      fetchDashboardData(); // Refresh data
+      fetchDashboardData();
     } catch {
       toast.error('Failed to delete meal');
     }
   };
 
-  // Dismiss an alert
   const handleDismissAlert = (index) => {
     setAlerts((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Greeting based on time of day
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good morning';
@@ -96,23 +92,20 @@ export default function Dashboard() {
     return 'Good evening';
   };
 
-  // Budget calculation
   const budget = profile?.dailyBudget || 150;
   const spent = meals.reduce((sum, m) => sum + (m.estimatedCost || 0), 0);
   const budgetPercentage = Math.min(Math.round((spent / budget) * 100), 100);
-  const budgetColor = budgetPercentage > 100 ? 'bg-red-500' : budgetPercentage > 75 ? 'bg-amber-500' : 'bg-green-500';
 
-  // Loading skeleton
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 bg-white/5 rounded-xl w-64" />
+        <div className="h-8 rounded-xl w-64" style={{ background: 'rgba(0,0,0,0.04)' }} />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="glass rounded-2xl h-40" />
+            <div key={i} className="rounded-2xl h-40" style={{ ...card, opacity: 0.5 }} />
           ))}
         </div>
-        <div className="glass rounded-2xl h-48" />
+        <div className="rounded-2xl h-48" style={{ ...card, opacity: 0.5 }} />
       </div>
     );
   }
@@ -120,12 +113,12 @@ export default function Dashboard() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* ─── Greeting ─── */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold font-display" style={{ color: '#18181b' }}>
             {getGreeting()}, {profile?.name || 'there'} 👋
           </h1>
-          <p className="text-gray-400 text-sm mt-1">
+          <p className="text-sm mt-1" style={{ color: '#71717a' }}>
             {new Date().toLocaleDateString('en-IN', {
               weekday: 'long',
               year: 'numeric',
@@ -136,7 +129,11 @@ export default function Dashboard() {
         </div>
         <Link
           to="/add-meal"
-          className="flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-indigo-500/10 cursor-pointer active:scale-[0.98]"
+          className="flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer active:scale-[0.98]"
+          style={{
+            background: 'linear-gradient(135deg, #059669 0%, #0891b2 50%, #6366f1 100%)',
+            boxShadow: '0 4px 16px rgba(5,150,105,0.2)',
+          }}
         >
           <PlusCircle size={16} />
           Add Meal
@@ -148,8 +145,8 @@ export default function Dashboard() {
 
       {/* ─── Nutrient Summary ─── */}
       <div>
-        <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-          <TrendingUp size={20} className="text-indigo-400" />
+        <h2 className="text-base font-bold mb-3 flex items-center gap-2 font-display" style={{ color: '#18181b' }}>
+          <TrendingUp size={18} style={{ color: '#059669' }} />
           Today's Nutrition
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -161,40 +158,49 @@ export default function Dashboard() {
       </div>
 
       {/* ─── Budget Tracker ─── */}
-      <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
+      <div className="rounded-2xl p-6 transition-all duration-300" style={card}>
         <div className="flex items-center justify-between mb-3.5">
-          <h3 className="text-xs font-semibold text-zinc-400 tracking-wider uppercase flex items-center gap-2">
-            <Wallet size={14} className="text-emerald-400" />
+          <h3 className="text-xs font-semibold tracking-wider uppercase flex items-center gap-2" style={{ color: '#71717a' }}>
+            <Wallet size={14} style={{ color: '#059669' }} />
             Daily Budget
           </h3>
-          <span className="text-xs font-bold text-zinc-400 bg-zinc-900 border border-zinc-800 px-2 py-1 rounded-md">
+          <span
+            className="text-xs font-bold px-2.5 py-1 rounded-lg"
+            style={{ color: '#52525b', background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}
+          >
             ₹{spent} / ₹{budget}
           </span>
         </div>
-        <div className="w-full bg-zinc-800/80 rounded-full h-1.5 overflow-hidden">
+        <div className="w-full rounded-full h-2 overflow-hidden" style={{ background: 'rgba(0,0,0,0.04)' }}>
           <div
-            className={`h-1.5 rounded-full ${budgetColor === 'bg-green-500' ? 'bg-emerald-500' : budgetColor === 'bg-amber-500' ? 'bg-amber-500' : 'bg-rose-500'} transition-all duration-500`}
-            style={{ width: `${Math.min(budgetPercentage, 100)}%` }}
+            className="h-2 rounded-full transition-all duration-500"
+            style={{
+              width: `${Math.min(budgetPercentage, 100)}%`,
+              background: budgetPercentage > 100
+                ? 'linear-gradient(90deg, #ef4444, #dc2626)'
+                : budgetPercentage > 75
+                ? 'linear-gradient(90deg, #f59e0b, #d97706)'
+                : 'linear-gradient(90deg, #10b981, #059669)',
+            }}
           />
         </div>
         {budgetPercentage > 100 && (
-          <p className="text-rose-400 text-xs font-medium mt-2.5">⚠ Budget exceeded by ₹{spent - budget}</p>
+          <p className="text-xs font-medium mt-2.5" style={{ color: '#ef4444' }}>⚠ Budget exceeded by ₹{spent - budget}</p>
         )}
       </div>
 
       {/* ─── Today's Meals ─── */}
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold text-white">
-            Today's Meals ({meals.length})
-          </h2>
-        </div>
+        <h2 className="text-base font-bold mb-3 font-display" style={{ color: '#18181b' }}>
+          Today's Meals ({meals.length})
+        </h2>
         {meals.length === 0 ? (
-          <div className="glass rounded-2xl p-10 text-center border border-white/5">
-            <p className="text-zinc-400 text-sm mb-3">No meals logged yet today 🍽️</p>
+          <div className="rounded-2xl p-10 text-center" style={card}>
+            <p className="text-sm mb-3" style={{ color: '#71717a' }}>No meals logged yet today 🍽️</p>
             <Link
               to="/add-meal"
-              className="text-indigo-400 hover:text-indigo-300 text-xs font-semibold uppercase tracking-wider"
+              className="text-xs font-semibold uppercase tracking-wider"
+              style={{ color: '#059669' }}
             >
               Log your first meal →
             </Link>
@@ -211,18 +217,35 @@ export default function Dashboard() {
       {/* ─── Smart Snack Suggestions ─── */}
       {suggestions.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-            <Lightbulb size={20} className="text-amber-400" />
+          <h2 className="text-base font-bold mb-3 flex items-center gap-2 font-display" style={{ color: '#18181b' }}>
+            <Lightbulb size={18} style={{ color: '#f59e0b' }} />
             Smart Snack Suggestions
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {suggestions.map((s, i) => (
-              <div key={i} className="glass glass-card-hover rounded-2xl p-5 border border-white/5">
+              <div
+                key={i}
+                className="rounded-2xl p-5 transition-all duration-300"
+                style={card}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = card.boxShadow;
+                }}
+              >
                 <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-zinc-900 font-bold text-sm font-display">{s.name}</span>
-                  <span className="text-emerald-400 text-xs font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/10">₹{s.estimatedCost}</span>
+                  <span className="font-bold text-sm font-display" style={{ color: '#18181b' }}>{s.name}</span>
+                  <span
+                    className="text-xs font-semibold px-2 py-0.5 rounded-md"
+                    style={{ color: '#059669', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.1)' }}
+                  >
+                    ₹{s.estimatedCost}
+                  </span>
                 </div>
-                <p className="text-zinc-400 text-xs leading-relaxed font-medium">{s.reason}</p>
+                <p className="text-xs leading-relaxed font-medium" style={{ color: '#71717a' }}>{s.reason}</p>
               </div>
             ))}
           </div>
@@ -231,40 +254,42 @@ export default function Dashboard() {
 
       {/* ─── Weekly Trend Chart ─── */}
       {weeklyData.length > 0 && (
-        <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
-          <h2 className="text-base font-bold text-white mb-5 flex items-center gap-2 font-display">
-            <TrendingUp size={18} className="text-indigo-400" />
+        <div className="rounded-2xl p-6" style={card}>
+          <h2 className="text-base font-bold mb-5 flex items-center gap-2 font-display" style={{ color: '#18181b' }}>
+            <TrendingUp size={18} style={{ color: '#6366f1' }} />
             Weekly Calorie Trend
           </h2>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={weeklyData}>
               <XAxis
                 dataKey="date"
-                stroke="#4b5563"
+                stroke="#a1a1aa"
                 fontSize={12}
                 tickFormatter={(val) => {
                   const d = new Date(val);
                   return d.toLocaleDateString('en-IN', { weekday: 'short' });
                 }}
               />
-              <YAxis stroke="#4b5563" fontSize={12} />
+              <YAxis stroke="#a1a1aa" fontSize={12} />
               <Tooltip
                 contentStyle={{
-                  background: '#18181b',
-                  border: '1px solid rgba(255,255,255,0.06)',
+                  background: 'rgba(255,255,255,0.9)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(0,0,0,0.06)',
                   borderRadius: '12px',
-                  color: '#f4f4f5',
+                  color: '#18181b',
                   fontFamily: 'var(--font-sans)',
                   fontSize: '12px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
                 }}
               />
               <Line
                 type="monotone"
                 dataKey="calories"
-                stroke="#8b5cf6"
-                strokeWidth={2}
-                dot={{ fill: '#8b5cf6', r: 3 }}
-                activeDot={{ r: 5, fill: '#c084fc' }}
+                stroke="#6366f1"
+                strokeWidth={2.5}
+                dot={{ fill: '#6366f1', r: 3 }}
+                activeDot={{ r: 5, fill: '#818cf8' }}
               />
             </LineChart>
           </ResponsiveContainer>

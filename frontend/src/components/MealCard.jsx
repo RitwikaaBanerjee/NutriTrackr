@@ -1,30 +1,27 @@
 /**
  * MealCard — Displays a single logged meal with nutrients and actions.
  * Color-coded meal type badge, nutrient pills, cost, and delete button.
- *
- * Props: { meal, onDelete }
+ * Styled for light-mode frosted glass aesthetic.
  */
 import { Trash2, Clock } from 'lucide-react';
 
-// Meal type → badge color mapping
-const typeColors = {
-  breakfast: 'bg-amber-50 text-amber-700 border-amber-200/50',
-  lunch: 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
-  dinner: 'bg-purple-50 text-purple-700 border-purple-200/50',
-  snack: 'bg-sky-50 text-sky-700 border-sky-200/50',
+const typeConfig = {
+  breakfast: { color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', emoji: '☕', label: 'Breakfast' },
+  lunch: { color: '#10b981', bg: 'rgba(16,185,129,0.08)', emoji: '🍛', label: 'Lunch' },
+  dinner: { color: '#8b5cf6', bg: 'rgba(139,92,246,0.08)', emoji: '🌙', label: 'Dinner' },
+  snack: { color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', emoji: '🍪', label: 'Snack' },
 };
 
-// Meal type emoji
-const typeEmoji = {
-  breakfast: '☕',
-  lunch: '🍛',
-  dinner: '🌙',
-  snack: '🍪',
-};
+const nutrientConfig = [
+  { key: 'calories', label: 'Cal', unit: '', color: '#f97316' },
+  { key: 'protein', label: 'Pro', unit: 'g', color: '#0ea5e9' },
+  { key: 'carbs', label: 'Carb', unit: 'g', color: '#8b5cf6' },
+  { key: 'fat', label: 'Fat', unit: 'g', color: '#f59e0b' },
+  { key: 'iron', label: 'Iron', unit: 'mg', color: '#f43f5e' },
+];
 
 export default function MealCard({ meal, onDelete }) {
-  const colorClass = typeColors[meal.mealType] || typeColors.snack;
-  const emoji = typeEmoji[meal.mealType] || '🍽️';
+  const config = typeConfig[meal.mealType] || typeConfig.snack;
   const nutrients = meal.nutrients || {};
 
   const handleDelete = () => {
@@ -34,29 +31,51 @@ export default function MealCard({ meal, onDelete }) {
   };
 
   const time = meal.createdAt
-    ? new Date(meal.createdAt).toLocaleTimeString('en-IN', {
-        hour: '2-digit',
-        minute: '2-digit',
-      })
+    ? new Date(meal.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
     : '';
 
   return (
-    <div className="glass glass-card-hover rounded-2xl p-5 border border-white/5 relative group">
+    <div
+      className="rounded-2xl p-5 relative group transition-all duration-300"
+      style={{
+        background: 'rgba(255,255,255,0.55)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255,255,255,0.6)',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'rgba(255,255,255,0.75)';
+        e.currentTarget.style.transform = 'translateY(-2px)';
+        e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.05)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'rgba(255,255,255,0.55)';
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)';
+      }}
+    >
       {/* Header: meal type + time + delete */}
       <div className="flex items-center justify-between mb-3.5">
-        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${colorClass}`}>
-          {emoji} {meal.mealType?.charAt(0).toUpperCase() + meal.mealType?.slice(1)}
+        <span
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold"
+          style={{ color: config.color, background: config.bg, border: `1px solid ${config.color}18` }}
+        >
+          {config.emoji} {config.label}
         </span>
         <div className="flex items-center gap-2">
           {time && (
-            <span className="flex items-center gap-1.5 text-zinc-400 text-xs font-semibold">
+            <span className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#a1a1aa' }}>
               <Clock size={12} />
               {time}
             </span>
           )}
           <button
             onClick={handleDelete}
-            className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-all p-1 cursor-pointer"
+            className="opacity-0 group-hover:opacity-100 transition-all p-1 cursor-pointer"
+            style={{ color: '#a1a1aa' }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#a1a1aa')}
           >
             <Trash2 size={13} />
           </button>
@@ -64,34 +83,29 @@ export default function MealCard({ meal, onDelete }) {
       </div>
 
       {/* Food description */}
-      <p className="text-zinc-800 text-sm font-semibold mb-3.5 leading-relaxed">
+      <p className="text-sm font-semibold mb-3.5 leading-relaxed" style={{ color: '#27272a' }}>
         {meal.description}
       </p>
 
       {/* Nutrient pills */}
       <div className="flex flex-wrap gap-1.5 mb-3.5">
-        <NutrientPill label="Cal" value={nutrients.calories} unit="" color="text-orange-400 bg-orange-500/5 border border-orange-500/10" />
-        <NutrientPill label="Pro" value={nutrients.protein} unit="g" color="text-sky-400 bg-sky-500/5 border border-sky-500/10" />
-        <NutrientPill label="Carb" value={nutrients.carbs} unit="g" color="text-purple-400 bg-purple-500/5 border border-purple-500/10" />
-        <NutrientPill label="Fat" value={nutrients.fat} unit="g" color="text-amber-400 bg-amber-500/5 border border-amber-500/10" />
-        <NutrientPill label="Iron" value={nutrients.iron} unit="mg" color="text-rose-400 bg-rose-500/5 border border-rose-500/10" />
+        {nutrientConfig.map(({ key, label, unit, color }) => (
+          <span
+            key={key}
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold"
+            style={{ color, background: `${color}0D`, border: `1px solid ${color}18` }}
+          >
+            {label}: {Math.round(nutrients[key] || 0)}{unit}
+          </span>
+        ))}
       </div>
 
       {/* Estimated cost */}
       {meal.estimatedCost > 0 && (
-        <p className="text-[11px] text-zinc-500 font-medium">
-          Estimated cost: <span className="text-emerald-400 font-semibold">₹{meal.estimatedCost}</span>
+        <p className="text-[11px] font-medium" style={{ color: '#71717a' }}>
+          Estimated cost: <span className="font-semibold" style={{ color: '#059669' }}>₹{meal.estimatedCost}</span>
         </p>
       )}
     </div>
-  );
-}
-
-/** Small pill component showing a nutrient value */
-function NutrientPill({ label, value, unit, color }) {
-  return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold border ${color}`}>
-      {label}: {Math.round(value || 0)}{unit}
-    </span>
   );
 }

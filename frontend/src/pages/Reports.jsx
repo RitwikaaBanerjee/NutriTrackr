@@ -3,6 +3,7 @@
  *
  * Weekly health report with charts, nutrient averages,
  * deficiency patterns, AI summary, and PDF download.
+ * Styled for light-mode frosted glass aesthetic.
  */
 import { useState, useEffect } from 'react';
 import * as api from '../services/api';
@@ -16,98 +17,98 @@ import {
 } from 'recharts';
 import toast from 'react-hot-toast';
 
+const card = {
+  background: 'rgba(255,255,255,0.55)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1px solid rgba(255,255,255,0.6)',
+  boxShadow: '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)',
+  borderRadius: '18px',
+};
+
+const tooltipStyle = {
+  background: 'rgba(255,255,255,0.92)',
+  backdropFilter: 'blur(12px)',
+  border: '1px solid rgba(0,0,0,0.06)',
+  borderRadius: '12px',
+  color: '#18181b',
+  fontFamily: 'var(--font-sans)',
+  fontSize: '12px',
+  boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+};
+
 export default function Reports() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
 
-  useEffect(() => {
-    fetchReport();
-  }, []);
+  useEffect(() => { fetchReport(); }, []);
 
   const fetchReport = async () => {
     setLoading(true);
     try {
       const res = await api.getWeeklyReport();
       setReport(res.data.data);
-    } catch (err) {
-      console.error('Failed to fetch report:', err);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { console.error('Failed to fetch report:', err); }
+    finally { setLoading(false); }
   };
 
-  // Handle PDF download
   const handleDownloadPdf = async () => {
     setDownloading(true);
     try {
       await api.downloadPdf();
       toast.success('Report downloaded! 📄');
-    } catch (err) {
-      toast.error('Failed to download report');
-      console.error(err);
-    } finally {
-      setDownloading(false);
-    }
+    } catch (err) { toast.error('Failed to download report'); console.error(err); }
+    finally { setDownloading(false); }
   };
 
-  // Date range display
   const endDate = new Date();
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - 7);
   const dateRange = `${startDate.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })} – ${endDate.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}`;
 
-  // Custom tooltip for charts
   const CustomTooltip = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null;
     return (
-      <div className="glass rounded-xl px-3 py-2 text-xs">
-        <p className="text-gray-400 mb-1">{label}</p>
+      <div className="rounded-xl px-3 py-2 text-xs" style={tooltipStyle}>
+        <p style={{ color: '#71717a' }} className="mb-1">{label}</p>
         {payload.map((entry, i) => (
-          <p key={i} style={{ color: entry.color }}>
-            {entry.name}: {Math.round(entry.value)}
-          </p>
+          <p key={i} style={{ color: entry.color }}>{entry.name}: {Math.round(entry.value)}</p>
         ))}
       </div>
     );
   };
 
-  // Loading skeleton
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 bg-white/5 rounded-xl w-64" />
-        <div className="glass rounded-2xl h-20" />
+        <div className="h-8 rounded-xl w-64" style={{ background: 'rgba(0,0,0,0.04)' }} />
+        <div className="rounded-2xl h-20" style={{ ...card, opacity: 0.5 }} />
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="glass rounded-2xl h-28" />
-          ))}
+          {[...Array(5)].map((_, i) => <div key={i} className="rounded-2xl h-28" style={{ ...card, opacity: 0.5 }} />)}
         </div>
-        <div className="glass rounded-2xl h-64" />
+        <div className="rounded-2xl h-64" style={{ ...card, opacity: 0.5 }} />
       </div>
     );
   }
 
-  // Empty state
   if (!report || !report.dailyBreakdown || report.dailyBreakdown.length === 0) {
     return (
       <div className="space-y-6 animate-fade-in">
-        <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-          <FileBarChart className="text-indigo-400" size={28} />
+        <h1 className="text-2xl font-bold flex items-center gap-3 font-display" style={{ color: '#18181b' }}>
+          <FileBarChart size={28} style={{ color: '#6366f1' }} />
           Weekly Health Report
         </h1>
-        <div className="glass rounded-2xl p-12 text-center">
-          <FileBarChart size={48} className="mx-auto text-gray-600 mb-4" />
-          <p className="text-gray-400 text-lg mb-2">No data for this period</p>
-          <p className="text-gray-500 text-sm">Start logging meals to see your weekly report!</p>
+        <div className="rounded-2xl p-12 text-center" style={card}>
+          <FileBarChart size={48} className="mx-auto mb-4" style={{ color: '#a1a1aa' }} />
+          <p className="text-lg mb-2" style={{ color: '#52525b' }}>No data for this period</p>
+          <p className="text-sm" style={{ color: '#a1a1aa' }}>Start logging meals to see your weekly report!</p>
         </div>
       </div>
     );
   }
 
   const { dailyBreakdown, averages, deficiencies, suggestions, summary } = report;
-
-  // Format daily data for charts
   const chartData = dailyBreakdown.map((day) => ({
     ...day,
     date: new Date(day.date).toLocaleDateString('en-IN', { weekday: 'short' }),
@@ -117,15 +118,19 @@ export default function Reports() {
     <div className="space-y-6 animate-fade-in">
       {/* ─── Page Title ─── */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-          <FileBarChart className="text-indigo-400" size={28} />
+        <h1 className="text-2xl font-bold flex items-center gap-3 font-display" style={{ color: '#18181b' }}>
+          <FileBarChart size={28} style={{ color: '#6366f1' }} />
           Weekly Health Report
         </h1>
         <button
           id="download-pdf-btn"
           onClick={handleDownloadPdf}
           disabled={downloading}
-          className="flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-indigo-500/10 cursor-pointer active:scale-[0.98] disabled:opacity-50"
+          className="flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer active:scale-[0.98] disabled:opacity-50"
+          style={{
+            background: 'linear-gradient(135deg, #059669 0%, #0891b2 50%, #6366f1 100%)',
+            boxShadow: '0 4px 16px rgba(5,150,105,0.2)',
+          }}
         >
           {downloading ? (
             <>
@@ -142,15 +147,18 @@ export default function Reports() {
       </div>
 
       {/* ─── Date Range ─── */}
-      <div className="glass rounded-xl px-4 py-2 flex items-center gap-2 w-fit border border-white/5 bg-zinc-900/50">
-        <Calendar size={14} className="text-indigo-400" />
-        <span className="text-zinc-300 text-xs font-semibold">{dateRange}</span>
+      <div
+        className="rounded-xl px-4 py-2 flex items-center gap-2 w-fit"
+        style={{ ...card, borderRadius: '12px', padding: '8px 16px' }}
+      >
+        <Calendar size={14} style={{ color: '#6366f1' }} />
+        <span className="text-xs font-semibold" style={{ color: '#52525b' }}>{dateRange}</span>
       </div>
 
       {/* ─── Nutrient Averages ─── */}
       {averages && (
         <div>
-          <h2 className="text-sm font-bold text-zinc-400 tracking-wider uppercase mb-3.5">Daily Averages</h2>
+          <h2 className="text-sm font-bold tracking-wider uppercase mb-3.5" style={{ color: '#71717a' }}>Daily Averages</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
             {[
               { label: 'Calories', value: averages.calories, rec: 2200, unit: 'kcal' },
@@ -160,16 +168,18 @@ export default function Reports() {
               { label: 'Iron', value: averages.iron, rec: 19, unit: 'mg' },
             ].map((item) => {
               const pct = Math.round(((item.value || 0) / item.rec) * 100);
-              const barColor = pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500';
               return (
-                <div key={item.label} className="glass glass-card-hover rounded-2xl p-5 border border-white/5">
-                  <p className="text-[10px] font-semibold text-zinc-400 tracking-wider uppercase mb-1">{item.label}</p>
-                  <p className="text-2xl font-extrabold text-white">{Math.round(item.value || 0)}</p>
-                  <p className="text-xs text-zinc-500 font-medium mb-3">/ {item.rec} {item.unit}</p>
-                  <div className="w-full bg-zinc-800/80 rounded-full h-1 overflow-hidden">
+                <div key={item.label} className="rounded-2xl p-5 transition-all duration-300" style={card}>
+                  <p className="text-[10px] font-semibold tracking-wider uppercase mb-1" style={{ color: '#71717a' }}>{item.label}</p>
+                  <p className="text-2xl font-extrabold" style={{ color: '#18181b' }}>{Math.round(item.value || 0)}</p>
+                  <p className="text-xs font-medium mb-3" style={{ color: '#a1a1aa' }}>/ {item.rec} {item.unit}</p>
+                  <div className="w-full rounded-full h-1.5 overflow-hidden" style={{ background: 'rgba(0,0,0,0.04)' }}>
                     <div
-                      className={`h-1 rounded-full ${barColor} transition-all`}
-                      style={{ width: `${Math.min(pct, 100)}%` }}
+                      className="h-1.5 rounded-full transition-all"
+                      style={{
+                        width: `${Math.min(pct, 100)}%`,
+                        background: pct >= 75 ? '#10b981' : pct >= 50 ? '#f59e0b' : '#f43f5e',
+                      }}
                     />
                   </div>
                 </div>
@@ -180,43 +190,36 @@ export default function Reports() {
       )}
 
       {/* ─── Calorie Trend Chart ─── */}
-      <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
-        <h2 className="text-base font-bold text-white mb-5 flex items-center gap-2 font-display">
-          <TrendingUp size={18} className="text-indigo-400" />
+      <div className="rounded-2xl p-6" style={card}>
+        <h2 className="text-base font-bold mb-5 flex items-center gap-2 font-display" style={{ color: '#18181b' }}>
+          <TrendingUp size={18} style={{ color: '#6366f1' }} />
           Calorie Trend
         </h2>
         <ResponsiveContainer width="100%" height={250}>
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorCalories" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <XAxis dataKey="date" stroke="#4b5563" fontSize={11} />
-            <YAxis stroke="#4b5563" fontSize={11} />
+            <XAxis dataKey="date" stroke="#a1a1aa" fontSize={11} />
+            <YAxis stroke="#a1a1aa" fontSize={11} />
             <Tooltip content={<CustomTooltip />} />
-            <Area
-              type="monotone"
-              dataKey="calories"
-              stroke="#8b5cf6"
-              strokeWidth={2}
-              fill="url(#colorCalories)"
-              name="Calories"
-            />
+            <Area type="monotone" dataKey="calories" stroke="#6366f1" strokeWidth={2.5} fill="url(#colorCalories)" name="Calories" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
 
       {/* ─── Macro Breakdown Chart ─── */}
-      <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
-        <h2 className="text-base font-bold text-white mb-5 font-display">Macro Breakdown by Day</h2>
+      <div className="rounded-2xl p-6" style={card}>
+        <h2 className="text-base font-bold mb-5 font-display" style={{ color: '#18181b' }}>Macro Breakdown by Day</h2>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={chartData}>
-            <XAxis dataKey="date" stroke="#4b5563" fontSize={11} />
-            <YAxis stroke="#4b5563" fontSize={11} />
+            <XAxis dataKey="date" stroke="#a1a1aa" fontSize={11} />
+            <YAxis stroke="#a1a1aa" fontSize={11} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend wrapperStyle={{ color: '#9ca3af', fontSize: '11px', fontFamily: 'var(--font-sans)' }} />
+            <Legend wrapperStyle={{ color: '#71717a', fontSize: '11px', fontFamily: 'var(--font-sans)' }} />
             <Bar dataKey="protein" name="Protein" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             <Bar dataKey="carbs" name="Carbs" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
             <Bar dataKey="fat" name="Fat" fill="#f59e0b" radius={[4, 4, 0, 0]} />
@@ -227,53 +230,46 @@ export default function Reports() {
       {/* ─── Deficiency Patterns ─── */}
       {deficiencies && deficiencies.length > 0 && (
         <div>
-          <h2 className="text-sm font-bold text-zinc-400 tracking-wider uppercase mb-3 flex items-center gap-2">
-            <AlertTriangle size={18} className="text-amber-400" />
+          <h2 className="text-sm font-bold tracking-wider uppercase mb-3 flex items-center gap-2" style={{ color: '#71717a' }}>
+            <AlertTriangle size={18} style={{ color: '#f59e0b' }} />
             Deficiency Patterns
           </h2>
           <div className="grid gap-3.5 sm:grid-cols-2">
-            {deficiencies.map((d, i) => (
-              <div
-                key={i}
-                className={`glass glass-card-hover rounded-2xl p-5 border border-white/5 border-l-4 ${
-                  d.severity === 'critical'
-                    ? 'border-l-rose-500'
-                    : d.severity === 'moderate'
-                    ? 'border-l-amber-500'
-                    : 'border-l-yellow-500'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-zinc-900 font-bold text-sm capitalize font-display">{d.nutrient}</span>
-                  <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
-                      d.severity === 'critical'
-                        ? 'bg-rose-500/10 text-rose-700 border-rose-500/10'
-                        : d.severity === 'moderate'
-                        ? 'bg-amber-500/10 text-amber-700 border-amber-500/10'
-                        : 'bg-yellow-500/10 text-yellow-700 border-yellow-500/10'
-                    }`}
-                  >
-                    {d.severity}
-                  </span>
+            {deficiencies.map((d, i) => {
+              const severityColor = d.severity === 'critical' ? '#ef4444' : d.severity === 'moderate' ? '#f59e0b' : '#eab308';
+              return (
+                <div
+                  key={i}
+                  className="rounded-2xl p-5"
+                  style={{ ...card, borderLeft: `4px solid ${severityColor}` }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-bold text-sm capitalize font-display" style={{ color: '#18181b' }}>{d.nutrient}</span>
+                    <span
+                      className="text-[10px] font-bold px-2 py-0.5 rounded-md"
+                      style={{ color: severityColor, background: `${severityColor}10`, border: `1px solid ${severityColor}18` }}
+                    >
+                      {d.severity}
+                    </span>
+                  </div>
+                  <p className="text-xs font-semibold" style={{ color: '#71717a' }}>
+                    {d.current} / {d.recommended} ({d.percentage}%)
+                  </p>
                 </div>
-                <p className="text-xs text-zinc-500 font-semibold">
-                  {d.current} / {d.recommended} ({d.percentage}%)
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
 
       {/* ─── AI Health Summary ─── */}
       {summary && (
-        <div className="glass glass-card-hover rounded-2xl p-6 border border-white/5">
-          <h2 className="text-base font-bold text-white mb-3 flex items-center gap-2 font-display">
-            <Brain size={18} className="text-purple-400" />
+        <div className="rounded-2xl p-6" style={card}>
+          <h2 className="text-base font-bold mb-3 flex items-center gap-2 font-display" style={{ color: '#18181b' }}>
+            <Brain size={18} style={{ color: '#8b5cf6' }} />
             AI Health Summary
           </h2>
-          <p className="text-zinc-700 text-sm leading-relaxed whitespace-pre-line font-semibold">{summary}</p>
+          <p className="text-sm leading-relaxed whitespace-pre-line font-medium" style={{ color: '#52525b' }}>{summary}</p>
         </div>
       )}
     </div>

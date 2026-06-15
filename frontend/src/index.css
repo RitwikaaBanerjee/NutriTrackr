@@ -107,6 +107,12 @@ h1, h2, h3, h4, h5, h6 {
   to { opacity: 1; }
 }
 
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* ─── Form Inputs ─── */
 input, select, textarea {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);

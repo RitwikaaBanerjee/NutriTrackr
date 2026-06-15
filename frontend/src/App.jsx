@@ -38,24 +38,26 @@ export default function App() {
         </Routes>
       </BrowserRouter>
 
-      {/* Toast notifications — dark theme */}
+      {/* Toast notifications — light frosted glass theme */}
       <Toaster
         position="top-right"
         toastOptions={{
           duration: 3000,
           style: {
-            background: '#18181b',
-            color: '#f4f4f5',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
+            background: 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(20px)',
+            color: '#18181b',
+            border: '1px solid rgba(0,0,0,0.06)',
             borderRadius: '14px',
             fontSize: '14px',
             fontFamily: 'var(--font-sans)',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
           },
           success: {
-            iconTheme: { primary: '#22c55e', secondary: '#1a1a2e' },
+            iconTheme: { primary: '#10b981', secondary: '#ffffff' },
           },
           error: {
-            iconTheme: { primary: '#ef4444', secondary: '#1a1a2e' },
+            iconTheme: { primary: '#ef4444', secondary: '#ffffff' },
           },
         }}
       />
