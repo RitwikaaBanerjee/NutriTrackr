@@ -36,63 +36,63 @@ export default function MealCard({ meal, onDelete }) {
 
   return (
     <div
-      className="rounded-2xl p-5 relative group transition-all duration-300"
+      className="rounded-2xl p-6 relative group transition-all duration-300"
       style={{
-        background: 'rgba(255,255,255,0.55)',
+        background: 'rgba(255,255,255,0.6)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.6)',
+        border: '1px solid rgba(255,255,255,0.7)',
         boxShadow: '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = 'rgba(255,255,255,0.75)';
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.05)';
+        e.currentTarget.style.background = 'rgba(255,255,255,0.85)';
+        e.currentTarget.style.transform = 'translateY(-3px)';
+        e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.06)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = 'rgba(255,255,255,0.55)';
+        e.currentTarget.style.background = 'rgba(255,255,255,0.6)';
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)';
       }}
     >
       {/* Header: meal type + time + delete */}
-      <div className="flex items-center justify-between mb-3.5">
+      <div className="flex items-center justify-between mb-4">
         <span
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold"
           style={{ color: config.color, background: config.bg, border: `1px solid ${config.color}18` }}
         >
           {config.emoji} {config.label}
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {time && (
             <span className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#a1a1aa' }}>
-              <Clock size={12} />
+              <Clock size={13} />
               {time}
             </span>
           )}
           <button
             onClick={handleDelete}
-            className="opacity-0 group-hover:opacity-100 transition-all p-1 cursor-pointer"
+            className="opacity-0 group-hover:opacity-100 transition-all p-1.5 cursor-pointer rounded-lg hover:bg-red-50"
             style={{ color: '#a1a1aa' }}
             onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
             onMouseLeave={(e) => (e.currentTarget.style.color = '#a1a1aa')}
           >
-            <Trash2 size={13} />
+            <Trash2 size={14} />
           </button>
         </div>
       </div>
 
       {/* Food description */}
-      <p className="text-sm font-semibold mb-3.5 leading-relaxed" style={{ color: '#27272a' }}>
+      <p className="text-sm font-semibold mb-4 leading-relaxed" style={{ color: '#27272a' }}>
         {meal.description}
       </p>
 
       {/* Nutrient pills */}
-      <div className="flex flex-wrap gap-1.5 mb-3.5">
+      <div className="flex flex-wrap gap-2 mb-4">
         {nutrientConfig.map(({ key, label, unit, color }) => (
           <span
             key={key}
-            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold"
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold"
             style={{ color, background: `${color}0D`, border: `1px solid ${color}18` }}
           >
             {label}: {Math.round(nutrients[key] || 0)}{unit}
@@ -102,8 +102,8 @@ export default function MealCard({ meal, onDelete }) {
 
       {/* Estimated cost */}
       {meal.estimatedCost > 0 && (
-        <p className="text-[11px] font-medium" style={{ color: '#71717a' }}>
-          Estimated cost: <span className="font-semibold" style={{ color: '#059669' }}>₹{meal.estimatedCost}</span>
+        <p className="text-xs font-medium pt-3" style={{ color: '#71717a', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
+          Estimated cost: <span className="font-bold" style={{ color: '#059669' }}>₹{meal.estimatedCost}</span>
         </p>
       )}
     </div>

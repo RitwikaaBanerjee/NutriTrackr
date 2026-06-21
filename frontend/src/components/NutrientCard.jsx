@@ -21,49 +21,49 @@ export default function NutrientCard({ label, value = 0, recommended = 1, unit, 
   };
 
   const ringColor = getColor();
-  const radius = 34;
+  const radius = 38;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (animatedPercent / 100) * circumference;
 
   return (
     <div
-      className="rounded-2xl p-5 flex flex-col items-center gap-3 relative group transition-all duration-300"
+      className="rounded-2xl p-6 flex flex-col items-center gap-4 relative group transition-all duration-300"
       style={{
-        background: 'rgba(255,255,255,0.55)',
+        background: 'rgba(255,255,255,0.6)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.6)',
+        border: '1px solid rgba(255,255,255,0.7)',
         boxShadow: '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = 'rgba(255,255,255,0.75)';
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.02)';
+        e.currentTarget.style.background = 'rgba(255,255,255,0.85)';
+        e.currentTarget.style.transform = 'translateY(-3px)';
+        e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.03)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = 'rgba(255,255,255,0.55)';
+        e.currentTarget.style.background = 'rgba(255,255,255,0.6)';
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)';
       }}
     >
       {/* Icon badge */}
       {Icon && (
-        <div className="absolute top-3.5 right-3.5 transition-colors" style={{ color: '#a1a1aa' }}>
-          <Icon size={16} />
+        <div className="absolute top-4 right-4 transition-colors" style={{ color: '#c4c4cc' }}>
+          <Icon size={18} />
         </div>
       )}
 
       {/* SVG Circular Progress Ring */}
-      <div className="relative w-20 h-20 mt-2">
-        <svg className="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
+      <div className="relative w-24 h-24">
+        <svg className="w-24 h-24 -rotate-90" viewBox="0 0 88 88">
           <circle
-            cx="40" cy="40" r={radius}
+            cx="44" cy="44" r={radius}
             stroke="rgba(0,0,0,0.04)"
             strokeWidth="5"
             fill="none"
           />
           <circle
-            cx="40" cy="40" r={radius}
+            cx="44" cy="44" r={radius}
             stroke={ringColor}
             strokeWidth="5"
             fill="none"
@@ -74,16 +74,16 @@ export default function NutrientCard({ label, value = 0, recommended = 1, unit, 
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-bold tracking-tight" style={{ color: '#18181b' }}>{Math.round(value)}</span>
-          <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: '#71717a' }}>{unit}</span>
+          <span className="text-2xl font-extrabold tracking-tight" style={{ color: '#18181b' }}>{Math.round(value)}</span>
+          <span className="text-[11px] font-semibold uppercase tracking-wider mt-0.5" style={{ color: '#71717a' }}>{unit}</span>
         </div>
       </div>
 
       {/* Label */}
-      <p className="text-xs font-semibold tracking-wider uppercase mt-1" style={{ color: '#52525b' }}>{label}</p>
+      <p className="text-sm font-bold tracking-wide uppercase" style={{ color: '#3f3f46' }}>{label}</p>
 
       {/* Target */}
-      <p className="text-[11px] font-medium" style={{ color: '#a1a1aa' }}>
+      <p className="text-xs font-medium" style={{ color: '#a1a1aa' }}>
         Target: {recommended} {unit}
       </p>
     </div>

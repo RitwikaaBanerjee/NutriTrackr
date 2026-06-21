@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 @theme {
@@ -26,7 +26,7 @@
 
 body {
   font-family: var(--font-sans);
-  background: radial-gradient(120% 120% at 50% 0%, #ffffff 45%, #f4f4f5 100%);
+  background: #f8fafc;
   color: #3f3f46; /* zinc-700 */
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -113,20 +113,12 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: 0% 50%; }
 }
 
-/* ─── Form Inputs ─── */
+/* ─── Form Inputs (base defaults — overridable by Tailwind) ─── */
 input, select, textarea {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  background-color: #ffffff !important;
-  border: 1px solid #e4e4e7 !important;
-  color: #18181b !important;
 }
 input::placeholder, textarea::placeholder {
-  color: #a1a1aa !important;
-}
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: rgba(99, 102, 241, 0.5) !important;
-  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.5), 0 0 15px rgba(99, 102, 241, 0.08) !important;
+  color: #a1a1aa;
 }
 
 /* ─── Utility Overrides (Mapping Dark utilities to Light mode) ─── */
@@ -167,4 +159,9 @@ input:focus, select:focus, textarea:focus {
 .recharts-cartesian-grid-horizontal line, 
 .recharts-cartesian-grid-vertical line {
   stroke: rgba(9, 9, 11, 0.05) !important;
+}
+
+/* ─── Page content minimum height ─── */
+.page-content {
+  min-height: calc(100vh - 72px);
 }

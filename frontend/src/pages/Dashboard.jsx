@@ -3,7 +3,7 @@
  *
  * Main hub showing today's nutrition summary, alerts, meals,
  * budget tracking, snack suggestions, and weekly trends.
- * Styled for premium light-mode frosted glass aesthetic.
+ * Styled for premium light-mode frosted glass aesthetic with proper spacing.
  */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,18 +12,18 @@ import * as api from '../services/api';
 import NutrientCard from '../components/NutrientCard';
 import AlertBanner from '../components/AlertBanner';
 import MealCard from '../components/MealCard';
-import { Flame, Beef, Wheat, Droplets, PlusCircle, TrendingUp, Wallet, Lightbulb } from 'lucide-react';
+import { Flame, Beef, Wheat, Droplets, PlusCircle, TrendingUp, Wallet, Lightbulb, UtensilsCrossed } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 
 /* ── Shared frosted card style ── */
 const card = {
-  background: 'rgba(255,255,255,0.55)',
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1px solid rgba(255,255,255,0.6)',
-  boxShadow: '0 4px 16px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02)',
-  borderRadius: '18px',
+  background: 'rgba(255,255,255,0.6)',
+  backdropFilter: 'blur(24px)',
+  WebkitBackdropFilter: 'blur(24px)',
+  border: '1px solid rgba(255,255,255,0.7)',
+  boxShadow: '0 4px 20px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.02)',
+  borderRadius: '24px',
 };
 
 export default function Dashboard() {
@@ -98,27 +98,40 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-8 rounded-xl w-64" style={{ background: 'rgba(0,0,0,0.04)' }} />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="rounded-2xl h-40" style={{ ...card, opacity: 0.5 }} />
-          ))}
+      <div className="w-full flex justify-center px-4 sm:px-6 lg:px-8 py-12 page-content animate-pulse">
+        <div className="w-full max-w-7xl space-y-10">
+          <div className="h-12 rounded-2xl w-80" style={{ background: 'rgba(0,0,0,0.04)' }} />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+             <div className="lg:col-span-2 space-y-10">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="rounded-2xl h-44" style={{ ...card, opacity: 0.5 }} />
+                  ))}
+                </div>
+                <div className="rounded-3xl h-72" style={{ ...card, opacity: 0.5 }} />
+             </div>
+             <div className="space-y-10">
+                <div className="rounded-3xl h-36" style={{ ...card, opacity: 0.5 }} />
+                <div className="rounded-3xl h-52" style={{ ...card, opacity: 0.5 }} />
+             </div>
+          </div>
         </div>
-        <div className="rounded-2xl h-48" style={{ ...card, opacity: 0.5 }} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* ─── Greeting ─── */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+    <div className="w-full flex justify-center px-4 sm:px-6 lg:px-8 py-12 pb-24 page-content animate-fade-in">
+      <div className="w-full max-w-7xl space-y-10">
+      
+      {/* ─── Header Section ─── */}
+      <div className="flex items-end justify-between flex-wrap gap-6 bg-white/50 backdrop-blur-md border border-white/60 p-8 rounded-3xl shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold font-display" style={{ color: '#18181b' }}>
+          <h1 className="text-3xl font-extrabold font-display tracking-tight" style={{ color: '#09090b' }}>
             {getGreeting()}, {profile?.name || 'there'} 👋
           </h1>
-          <p className="text-sm mt-1" style={{ color: '#71717a' }}>
+          <p className="text-sm font-medium mt-2 flex items-center gap-2.5" style={{ color: '#71717a' }}>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             {new Date().toLocaleDateString('en-IN', {
               weekday: 'long',
               year: 'numeric',
@@ -129,172 +142,199 @@ export default function Dashboard() {
         </div>
         <Link
           to="/add-meal"
-          className="flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer active:scale-[0.98]"
+          className="flex items-center gap-2.5 text-white px-7 py-3.5 rounded-2xl text-sm font-bold transition-all hover:scale-105 active:scale-95 shadow-lg"
           style={{
-            background: 'linear-gradient(135deg, #059669 0%, #0891b2 50%, #6366f1 100%)',
-            boxShadow: '0 4px 16px rgba(5,150,105,0.2)',
+            background: 'linear-gradient(135deg, #059669 0%, #0284c7 100%)',
+            boxShadow: '0 8px 24px rgba(5,150,105,0.25)',
           }}
         >
-          <PlusCircle size={16} />
-          Add Meal
+          <PlusCircle size={18} />
+          Log a Meal
         </Link>
       </div>
 
-      {/* ─── Alerts ─── */}
-      <AlertBanner alerts={alerts} onDismiss={handleDismissAlert} />
-
-      {/* ─── Nutrient Summary ─── */}
-      <div>
-        <h2 className="text-base font-bold mb-3 flex items-center gap-2 font-display" style={{ color: '#18181b' }}>
-          <TrendingUp size={18} style={{ color: '#059669' }} />
-          Today's Nutrition
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <NutrientCard label="Calories" value={totals.calories} recommended={recommended.calories} unit="kcal" icon={Flame} />
-          <NutrientCard label="Protein" value={totals.protein} recommended={recommended.protein} unit="g" icon={Beef} />
-          <NutrientCard label="Carbs" value={totals.carbs} recommended={recommended.carbs} unit="g" icon={Wheat} />
-          <NutrientCard label="Fat" value={totals.fat} recommended={recommended.fat} unit="g" icon={Droplets} />
-        </div>
-      </div>
-
-      {/* ─── Budget Tracker ─── */}
-      <div className="rounded-2xl p-6 transition-all duration-300" style={card}>
-        <div className="flex items-center justify-between mb-3.5">
-          <h3 className="text-xs font-semibold tracking-wider uppercase flex items-center gap-2" style={{ color: '#71717a' }}>
-            <Wallet size={14} style={{ color: '#059669' }} />
-            Daily Budget
-          </h3>
-          <span
-            className="text-xs font-bold px-2.5 py-1 rounded-lg"
-            style={{ color: '#52525b', background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}
-          >
-            ₹{spent} / ₹{budget}
-          </span>
-        </div>
-        <div className="w-full rounded-full h-2 overflow-hidden" style={{ background: 'rgba(0,0,0,0.04)' }}>
-          <div
-            className="h-2 rounded-full transition-all duration-500"
-            style={{
-              width: `${Math.min(budgetPercentage, 100)}%`,
-              background: budgetPercentage > 100
-                ? 'linear-gradient(90deg, #ef4444, #dc2626)'
-                : budgetPercentage > 75
-                ? 'linear-gradient(90deg, #f59e0b, #d97706)'
-                : 'linear-gradient(90deg, #10b981, #059669)',
-            }}
-          />
-        </div>
-        {budgetPercentage > 100 && (
-          <p className="text-xs font-medium mt-2.5" style={{ color: '#ef4444' }}>⚠ Budget exceeded by ₹{spent - budget}</p>
-        )}
-      </div>
-
-      {/* ─── Today's Meals ─── */}
-      <div>
-        <h2 className="text-base font-bold mb-3 font-display" style={{ color: '#18181b' }}>
-          Today's Meals ({meals.length})
-        </h2>
-        {meals.length === 0 ? (
-          <div className="rounded-2xl p-10 text-center" style={card}>
-            <p className="text-sm mb-3" style={{ color: '#71717a' }}>No meals logged yet today 🍽️</p>
-            <Link
-              to="/add-meal"
-              className="text-xs font-semibold uppercase tracking-wider"
-              style={{ color: '#059669' }}
-            >
-              Log your first meal →
-            </Link>
+      {/* ─── Main Grid Layout ─── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        
+        {/* ─── LEFT COLUMN (Nutrition, Meals, Snacks) ─── */}
+        <div className="lg:col-span-2 space-y-10">
+          
+          {/* Nutrient Summary */}
+          <div>
+            <h2 className="text-lg font-bold mb-5 flex items-center gap-2.5 font-display tracking-tight" style={{ color: '#18181b' }}>
+              <TrendingUp size={22} style={{ color: '#059669' }} />
+              Today's Nutrition Summary
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+              <NutrientCard label="Calories" value={totals.calories} recommended={recommended.calories} unit="kcal" icon={Flame} />
+              <NutrientCard label="Protein" value={totals.protein} recommended={recommended.protein} unit="g" icon={Beef} />
+              <NutrientCard label="Carbs" value={totals.carbs} recommended={recommended.carbs} unit="g" icon={Wheat} />
+              <NutrientCard label="Fat" value={totals.fat} recommended={recommended.fat} unit="g" icon={Droplets} />
+            </div>
           </div>
-        ) : (
-          <div className="grid gap-3 md:grid-cols-2">
-            {meals.map((meal) => (
-              <MealCard key={meal._id} meal={meal} onDelete={handleDeleteMeal} />
-            ))}
-          </div>
-        )}
-      </div>
 
-      {/* ─── Smart Snack Suggestions ─── */}
-      {suggestions.length > 0 && (
-        <div>
-          <h2 className="text-base font-bold mb-3 flex items-center gap-2 font-display" style={{ color: '#18181b' }}>
-            <Lightbulb size={18} style={{ color: '#f59e0b' }} />
-            Smart Snack Suggestions
-          </h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {suggestions.map((s, i) => (
-              <div
-                key={i}
-                className="rounded-2xl p-5 transition-all duration-300"
-                style={card}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = card.boxShadow;
-                }}
-              >
-                <div className="flex items-center justify-between mb-2.5">
-                  <span className="font-bold text-sm font-display" style={{ color: '#18181b' }}>{s.name}</span>
-                  <span
-                    className="text-xs font-semibold px-2 py-0.5 rounded-md"
-                    style={{ color: '#059669', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.1)' }}
-                  >
-                    ₹{s.estimatedCost}
-                  </span>
+          {/* Today's Meals */}
+          <div className="rounded-3xl p-8 md:p-10 transition-all duration-300" style={card}>
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-lg font-bold font-display tracking-tight" style={{ color: '#18181b' }}>
+                Meal Log ({meals.length})
+              </h2>
+            </div>
+            
+            {meals.length === 0 ? (
+              <div className="rounded-2xl p-14 text-center bg-white/50 border border-white/60">
+                <div className="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center"
+                     style={{ background: 'rgba(16,185,129,0.08)' }}>
+                  <UtensilsCrossed size={28} style={{ color: '#a1a1aa' }} />
                 </div>
-                <p className="text-xs leading-relaxed font-medium" style={{ color: '#71717a' }}>{s.reason}</p>
+                <p className="text-base font-semibold mb-2" style={{ color: '#52525b' }}>No meals logged yet today</p>
+                <p className="text-sm font-medium mb-6" style={{ color: '#a1a1aa' }}>Start tracking your nutrition by logging your first meal</p>
+                <Link
+                  to="/add-meal"
+                  className="inline-flex items-center gap-2 text-sm font-bold px-6 py-3 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors border border-emerald-200/50"
+                >
+                  <PlusCircle size={16} />
+                  Log your first meal
+                </Link>
               </div>
-            ))}
+            ) : (
+              <div className="grid gap-5 sm:grid-cols-2">
+                {meals.map((meal) => (
+                  <MealCard key={meal._id} meal={meal} onDelete={handleDeleteMeal} />
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      )}
 
-      {/* ─── Weekly Trend Chart ─── */}
-      {weeklyData.length > 0 && (
-        <div className="rounded-2xl p-6" style={card}>
-          <h2 className="text-base font-bold mb-5 flex items-center gap-2 font-display" style={{ color: '#18181b' }}>
-            <TrendingUp size={18} style={{ color: '#6366f1' }} />
-            Weekly Calorie Trend
-          </h2>
-          <ResponsiveContainer width="100%" height={200}>
-            <LineChart data={weeklyData}>
-              <XAxis
-                dataKey="date"
-                stroke="#a1a1aa"
-                fontSize={12}
-                tickFormatter={(val) => {
-                  const d = new Date(val);
-                  return d.toLocaleDateString('en-IN', { weekday: 'short' });
-                }}
-              />
-              <YAxis stroke="#a1a1aa" fontSize={12} />
-              <Tooltip
-                contentStyle={{
-                  background: 'rgba(255,255,255,0.9)',
-                  backdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(0,0,0,0.06)',
-                  borderRadius: '12px',
-                  color: '#18181b',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '12px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="calories"
-                stroke="#6366f1"
-                strokeWidth={2.5}
-                dot={{ fill: '#6366f1', r: 3 }}
-                activeDot={{ r: 5, fill: '#818cf8' }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          {/* Smart Snack Suggestions */}
+          {suggestions.length > 0 && (
+            <div>
+              <h2 className="text-lg font-bold mb-5 flex items-center gap-2.5 font-display tracking-tight" style={{ color: '#18181b' }}>
+                <Lightbulb size={22} style={{ color: '#f59e0b' }} />
+                Smart Snack Suggestions
+              </h2>
+              <div className="grid gap-5 sm:grid-cols-2">
+                {suggestions.map((s, i) => (
+                  <div
+                    key={i}
+                    className="rounded-2xl p-6 transition-all duration-300 bg-white/60 border border-white/80 hover:-translate-y-1 hover:shadow-xl"
+                  >
+                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                      <span className="font-bold text-sm font-display text-zinc-900">{s.name}</span>
+                      <span className="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-100/80 text-emerald-700 border border-emerald-200/50">
+                        ₹{s.estimatedCost}
+                      </span>
+                    </div>
+                    <p className="text-sm leading-relaxed font-medium text-zinc-500">{s.reason}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* ─── RIGHT COLUMN (Sidebar: Alerts, Budget, Trends) ─── */}
+        <div className="space-y-10">
+          
+          {/* Alerts / Notifications */}
+          <AlertBanner alerts={alerts} onDismiss={handleDismissAlert} />
+
+          {/* Budget Tracker */}
+          <div className="rounded-3xl p-7 transition-all duration-300" style={card}>
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-sm font-bold flex items-center gap-2.5 font-display" style={{ color: '#18181b' }}>
+                <Wallet size={18} style={{ color: '#059669' }} />
+                Daily Budget
+              </h3>
+              <span className="text-xs font-bold px-3.5 py-2 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200/50">
+                ₹{spent} / ₹{budget}
+              </span>
+            </div>
+            
+            <div className="w-full rounded-full h-3.5 overflow-hidden bg-zinc-200/50 shadow-inner">
+              <div
+                className="h-full rounded-full transition-all duration-700 ease-out"
+                style={{
+                  width: `${Math.min(budgetPercentage, 100)}%`,
+                  background: budgetPercentage > 100
+                    ? 'linear-gradient(90deg, #ef4444, #b91c1c)'
+                    : budgetPercentage > 75
+                    ? 'linear-gradient(90deg, #f59e0b, #d97706)'
+                    : 'linear-gradient(90deg, #34d399, #059669)',
+                }}
+              />
+            </div>
+            
+            {budgetPercentage > 100 ? (
+              <p className="text-xs font-semibold mt-4 text-red-500 bg-red-50 px-4 py-2.5 rounded-lg border border-red-100">
+                ⚠ Budget exceeded by ₹{spent - budget}
+              </p>
+            ) : (
+              <p className="text-xs font-medium mt-4 text-zinc-500 text-center">
+                {100 - budgetPercentage}% remaining today
+              </p>
+            )}
+          </div>
+
+          {/* Weekly Trend Chart */}
+          {weeklyData.length > 0 && (
+            <div className="rounded-3xl p-7" style={card}>
+              <h2 className="text-sm font-bold mb-7 flex items-center gap-2.5 font-display" style={{ color: '#18181b' }}>
+                <TrendingUp size={18} style={{ color: '#6366f1' }} />
+                Weekly Calorie Trend
+              </h2>
+              <div className="h-52 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={weeklyData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+                    <XAxis
+                      dataKey="date"
+                      stroke="#a1a1aa"
+                      fontSize={11}
+                      axisLine={false}
+                      tickLine={false}
+                      tickFormatter={(val) => {
+                        const d = new Date(val);
+                        return d.toLocaleDateString('en-IN', { weekday: 'short' });
+                      }}
+                    />
+                    <YAxis 
+                      stroke="#a1a1aa" 
+                      fontSize={11} 
+                      axisLine={false} 
+                      tickLine={false} 
+                    />
+                    <Tooltip
+                      cursor={{ stroke: 'rgba(0,0,0,0.05)', strokeWidth: 2 }}
+                      contentStyle={{
+                        background: 'rgba(255,255,255,0.95)',
+                        backdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(0,0,0,0.08)',
+                        borderRadius: '16px',
+                        color: '#18181b',
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
+                        padding: '10px 14px'
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="calories"
+                      stroke="#6366f1"
+                      strokeWidth={3}
+                      dot={{ fill: '#ffffff', stroke: '#6366f1', strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, fill: '#6366f1', stroke: '#ffffff', strokeWidth: 2 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
+        </div>
+        
+      </div>
+      </div>
     </div>
   );
 }
