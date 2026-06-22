@@ -125,12 +125,12 @@ export default function Login() {
         {/* ═══════  LEFT PANEL  ═══════ */}
         <div
           className="lg:w-[48%] flex flex-col justify-between p-8 lg:p-12 bg-[#f0f9f4] relative overflow-hidden shrink-0"
-
+          style={{ padding: '56px' }}
         >
 
           <div className="relative z-10">
             {/* ── Brand ── */}
-            <div className="flex items-center gap-3.5 mb-14">
+            <div className="flex items-center gap-4 mb-12" style={{ marginBottom: '12px' }}>
               <div className="w-12 h-12 rounded-[14px] flex items-center justify-center shrink-0 shadow-sm" style={{ background: '#059669' }}>
                 <LeafLogo />
               </div>
@@ -145,39 +145,35 @@ export default function Login() {
             </div>
 
             {/* ── Copy ── */}
-            <h2 className="text-[42px] font-bold tracking-tight mb-5" style={{ fontFamily: 'var(--font-display)', lineHeight: '1.2' }}>
-              <span className="text-[#059669]">Smart Nutrition</span><br />
-              <span className="text-zinc-800">for Hostel Life</span>
+            <h2 className="text-[36px] font-extrabold tracking-tight mb-4" style={{ fontFamily: 'var(--font-display)', lineHeight: '1.2' }}>
+              <span className="text-[#059669]">AI-Powered Student</span><br />
+              <span className="text-zinc-800">Nutrition Tracker</span>
             </h2>
-            <p className="text-[17px] leading-[1.6] text-zinc-500 max-w-[380px] font-medium">
-              Track your meals, monitor nutrients, get AI-powered insights and stay healthy on a student budget.
-            </p>
           </div>
 
           {/* ── Image ── */}
-          <div className="flex-1 w-full flex items-center justify-center relative z-0 mt-8 mb-6 min-h-[250px]">
+          <div className="flex-1 w-full flex items-center justify-center relative z-0 min-h-[250px]" style={{ marginTop: '32px', marginBottom: '32px' }}>
             <img
               src="/hero-nutrition.png"
               alt="Nutrition Mockup"
-              className="w-full max-w-[440px] h-full object-contain drop-shadow-xl"
+              className="w-full max-w-[440px] drop-shadow-xl rounded-[32px] overflow-hidden"
+              style={{ borderRadius: '32px' }}
             />
           </div>
 
           {/* ── Feature Pills ── */}
-          <div className="relative z-10 mt-auto w-full flex justify-center">
-            <div className="inline-flex items-center justify-center gap-6 sm:gap-10 bg-white/90 backdrop-blur-md px-8 py-4 rounded-full shadow-sm border border-white w-full max-w-[480px]">
-              <div className="flex items-center gap-2">
-                <BrainIcon />
-                <span className="text-[13px] font-semibold text-zinc-700">AI Meal Analysis</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <ChartIcon />
-                <span className="text-[13px] font-semibold text-zinc-700">Health Insights</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <WalletIcon />
-                <span className="text-[13px] font-semibold text-zinc-700">Budget Friendly</span>
-              </div>
+          <div className="relative z-10 mt-auto w-full flex flex-nowrap justify-center gap-2 w-full">
+            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md rounded-full shadow-sm border border-white transition-transform hover:scale-105 shrink-0" style={{ padding: '10px 16px' }}>
+              <BrainIcon />
+              <span className="text-[13px] font-bold text-zinc-700 whitespace-nowrap">AI Meal Analysis</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md rounded-full shadow-sm border border-white transition-transform hover:scale-105 shrink-0" style={{ padding: '10px 16px' }}>
+              <ChartIcon />
+              <span className="text-[13px] font-bold text-zinc-700 whitespace-nowrap">Health Insights</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md rounded-full shadow-sm border border-white transition-transform hover:scale-105 shrink-0" style={{ padding: '10px 16px' }}>
+              <WalletIcon />
+              <span className="text-[13px] font-bold text-zinc-700 whitespace-nowrap">Budget Friendly</span>
             </div>
           </div>
         </div>
@@ -189,13 +185,15 @@ export default function Login() {
         >
 
           {/* ── "New here? Sign up" Top-Right Button ── */}
+          {/* ── "New here? Sign up" Top-Right Button ── */}
           <div className="absolute top-8 right-8 z-20">
             <button
               onClick={() => setIsSignUp(!isSignUp)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-zinc-200 bg-white hover:bg-zinc-50 transition-colors"
+              className="flex items-center gap-1 text-[14px] font-medium text-zinc-500 bg-white border border-zinc-200 rounded-[100px] hover:bg-zinc-50 transition-colors shadow-sm"
+              style={{ padding: '10px 24px' }}
             >
-              <span className="text-[13px] font-semibold text-zinc-500">{isSignUp ? 'Already have an account?' : 'New here?'}</span>
-              <span className="text-[13px] font-bold text-[#059669]">{isSignUp ? 'Sign in' : 'Sign up'}</span>
+              {isSignUp ? "Already have an account?" : "New here?"}
+              <span className="text-[#059669] font-bold ml-1">{isSignUp ? "Log in" : "Sign up"}</span>
             </button>
           </div>
 
@@ -203,7 +201,7 @@ export default function Login() {
           <div className="w-full max-w-[420px]">
 
             {/* Icon & Welcome */}
-            <div className="flex flex-col items-center mb-10">
+            <div className="flex flex-col items-center mb-12" style={{ marginBottom: '19px' }}>
               <div className="w-16 h-16 bg-[#eaf6ef] rounded-[20px] flex items-center justify-center mb-6 shadow-[0_4px_20px_rgba(5,150,105,0.08)]">
                 <span className="text-[30px] leading-none">🥗</span>
               </div>
