@@ -113,6 +113,11 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: 0% 50%; }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* ─── Form Inputs (base defaults — overridable by Tailwind) ─── */
 input, select, textarea {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -164,4 +169,23 @@ input::placeholder, textarea::placeholder {
 /* ─── Page content minimum height ─── */
 .page-content {
   min-height: calc(100vh - 72px);
+}
+
+/* ─── Dashboard responsive grid ─── */
+.dashboard-grid {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+/* ─── Slide-in animation for mobile menu ─── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-in {
+  animation: slideIn 0.25s ease-out forwards;
 }
