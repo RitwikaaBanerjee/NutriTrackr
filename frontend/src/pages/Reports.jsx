@@ -381,7 +381,7 @@ export default function Reports() {
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <XAxis dataKey="date" stroke="#a1a1aa" fontSize={12} fontWeight={600} tickLine={false} axisLine={false} />
                   <YAxis stroke="#a1a1aa" fontSize={12} fontWeight={600} tickLine={false} axisLine={false} />
-                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.02)' }} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} shared={false} />
                   <Legend wrapperStyle={{ paddingTop: '20px', fontWeight: 'bold', fontSize: '12px' }} />
                   <Bar dataKey="protein" name="Protein" fill="#3b82f6" radius={[6, 6, 0, 0]} />
                   <Bar dataKey="carbs" name="Carbs" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
