@@ -200,7 +200,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
         .fontSize(10)
         .fillColor(severityColor)
         .text(
-          `⚠ ${d.nutrient.toUpperCase()} — ${d.percentage}% of recommended (${d.current}/${d.recommended}) [${d.severity}]`,
+          `! ${d.nutrient.toUpperCase()} — ${d.percentage}% of recommended (${d.current}/${d.recommended}) [${d.severity}]`,
           70
         );
     }

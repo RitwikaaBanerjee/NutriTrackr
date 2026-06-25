@@ -40,34 +40,6 @@ const tooltipStyle = {
   boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
   padding: '12px 16px',
 };
-
-// Cute sticker component with cutout paper border effect
-const Sticker = ({ emoji, className = '', style = {} }) => {
-  const [rotation] = useState(() => Math.floor(Math.random() * 20) - 10); // Random tilt
-
-  return (
-    <div
-      className={`absolute select-none hover:scale-115 transition-all duration-300 pointer-events-auto z-20 flex items-center justify-center font-display ${className}`}
-      style={{
-        background: '#ffffff',
-        padding: '10px',
-        fontSize: '1.8rem',
-        borderRadius: '9999px',
-        border: '3.5px solid #ffffff',
-        boxShadow: '0 0 0 3.5px #ffffff, 0 4px 15px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)',
-        filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.06))',
-        transform: `rotate(${rotation}deg)`,
-        cursor: 'pointer',
-        width: '56px',
-        height: '56px',
-        ...style
-      }}
-    >
-      {emoji}
-    </div>
-  );
-};
-
 export default function Reports() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -272,11 +244,6 @@ export default function Reports() {
     <div className="w-full flex justify-center px-4 sm:px-6 lg:px-8 py-12 pb-24 page-content animate-fade-in relative">
       <div className="w-full max-w-6xl space-y-10 relative">
 
-        {/* Cute Food Stickers scattered in the filled state */}
-        <Sticker emoji="🥗" className="left-[-20px] top-[220px] hidden md:flex" />
-        <Sticker emoji="🍳" className="right-[-20px] top-[380px] hidden md:flex" />
-        <Sticker emoji="🍉" className="left-[100px] bottom-[-25px] hidden sm:flex" />
-        <Sticker emoji="🍇" className="right-[150px] bottom-[-20px] hidden sm:flex" />
 
         {/* Header Section */}
         <div className="flex items-end justify-between flex-wrap gap-6 bg-white/50 backdrop-blur-md border border-white/60 p-8 rounded-3xl shadow-sm">
