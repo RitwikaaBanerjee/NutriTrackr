@@ -33,11 +33,13 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
     .fill(colors.primary);
 
   doc
+    .font('Helvetica-Bold')
     .fontSize(24)
     .fillColor('#ffffff')
     .text('Weekly Nutrition Report', 50, 30, { align: 'center' });
 
   doc
+    .font('Helvetica')
     .fontSize(10)
     .fillColor('#e0e0ff')
     .text('AI-Powered Hostel Nutrition & Health Monitoring System', 50, 60, { align: 'center' });
@@ -47,6 +49,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
 
   // ─── User Info Section ───
   doc
+    .font('Helvetica-Bold')
     .fontSize(14)
     .fillColor(colors.primary)
     .text('User Information', 50);
@@ -54,6 +57,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
   doc.moveDown(0.5);
 
   doc
+    .font('Helvetica')
     .fontSize(10)
     .fillColor(colors.text);
 
@@ -61,7 +65,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
     ['Name', userData.name || 'Not set'],
     ['Age', userData.age ? `${userData.age} years` : 'Not set'],
     ['Gender', userData.gender ? userData.gender.charAt(0).toUpperCase() + userData.gender.slice(1) : 'Not set'],
-    ['Daily Budget', `₹${userData.dailyBudget || 150}`],
+    ['Daily Budget', `Rs. ${userData.dailyBudget || 150}`],
     ['Food Preference', userData.foodPreference ? userData.foodPreference.charAt(0).toUpperCase() + userData.foodPreference.slice(1) : 'Veg'],
     ['Activity Level', userData.activityLevel || 'Moderate'],
   ];
@@ -78,6 +82,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
   startDate.setDate(startDate.getDate() - 7);
 
   doc
+    .font('Helvetica')
     .fontSize(10)
     .fillColor(colors.primary)
     .text(`Report Period: ${startDate.toLocaleDateString('en-IN')} – ${endDate.toLocaleDateString('en-IN')}`, 50);
@@ -86,6 +91,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
 
   // ─── Daily Nutrient Summary Table ───
   doc
+    .font('Helvetica-Bold')
     .fontSize(14)
     .fillColor(colors.primary)
     .text('Daily Nutrient Summary', 50);
@@ -104,6 +110,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
   let xPos = 50;
   headers.forEach((header, i) => {
     doc
+      .font('Helvetica-Bold')
       .fontSize(9)
       .fillColor('#ffffff')
       .text(header, xPos + 5, tableTop + 5, { width: colWidths[i] - 10, align: 'center' });
@@ -134,6 +141,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
     xPos = 50;
     rowData.forEach((cell, i) => {
       doc
+        .font('Helvetica')
         .fontSize(9)
         .fillColor(colors.text)
         .text(cell, xPos + 5, rowY + 4, { width: colWidths[i] - 10, align: 'center' });
@@ -157,12 +165,13 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
   // ─── Averages Section ───
   if (weeklyData.averages) {
     doc
+      .font('Helvetica-Bold')
       .fontSize(14)
       .fillColor(colors.primary)
       .text('Weekly Averages', 50);
 
     doc.moveDown(0.5);
-    doc.fontSize(10).fillColor(colors.text);
+    doc.font('Helvetica').fontSize(10).fillColor(colors.text);
 
     const avg = weeklyData.averages;
     doc.text(`Calories: ${Math.round(avg.calories || 0)} kcal/day`, 70);
@@ -176,6 +185,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
 
   // ─── Deficiency Alerts Section ───
   doc
+    .font('Helvetica-Bold')
     .fontSize(14)
     .fillColor(colors.primary)
     .text('Deficiency Alerts', 50);
@@ -184,6 +194,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
 
   if (deficiencies.length === 0) {
     doc
+      .font('Helvetica')
       .fontSize(10)
       .fillColor(colors.low)
       .text('✅ No significant deficiencies detected. Great job!', 70);
@@ -197,6 +208,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
 
       // Severity badge
       doc
+        .font('Helvetica-Bold')
         .fontSize(10)
         .fillColor(severityColor)
         .text(
@@ -210,6 +222,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
 
   // ─── Snack Suggestions Section ───
   doc
+    .font('Helvetica-Bold')
     .fontSize(14)
     .fillColor(colors.primary)
     .text('Smart Snack Suggestions', 50);
@@ -218,15 +231,17 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
 
   if (suggestions.length === 0) {
     doc
+      .font('Helvetica')
       .fontSize(10)
       .fillColor(colors.text)
       .text('No specific suggestions — your nutrition looks balanced!', 70);
   } else {
     for (const s of suggestions) {
       doc
+        .font('Helvetica')
         .fontSize(10)
         .fillColor(colors.text)
-        .text(`• ${s.name} — ₹${s.estimatedCost} (${s.reason})`, 70);
+        .text(`• ${s.name} — Rs. ${s.estimatedCost} (${s.reason})`, 70);
     }
   }
 
@@ -234,6 +249,7 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
 
   // ─── Footer ───
   doc
+    .font('Helvetica')
     .fontSize(8)
     .fillColor('#999999')
     .text(
