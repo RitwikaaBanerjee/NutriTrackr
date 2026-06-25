@@ -87,9 +87,9 @@ export default function Dashboard() {
 
   const dailyCompletion = Math.min(Math.round(
     ((totals.calories / recommended.calories) +
-     (totals.protein / recommended.protein) +
-     (totals.carbs / recommended.carbs) +
-     (totals.fat / recommended.fat)) / 4 * 100
+      (totals.protein / recommended.protein) +
+      (totals.carbs / recommended.carbs) +
+      (totals.fat / recommended.fat)) / 4 * 100
   ), 100) || 0;
 
   const greeting = getGreeting();
@@ -155,8 +155,8 @@ export default function Dashboard() {
       }}>
         <p style={{ fontSize: '13px', fontWeight: 600, color: '#3f3f46', margin: 0 }}>
           {dailyCompletion >= 80 ? '🎯 Almost at your daily goal! Keep going.' :
-           dailyCompletion >= 40 ? '🥗 Good progress — log more meals to stay on track.' :
-           '🍽️ Start logging meals to track your nutrition today.'}
+            dailyCompletion >= 40 ? '🥗 Good progress — log more meals to stay on track.' :
+              '🍽️ Start logging meals to track your nutrition today.'}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           <div style={{ width: '100px', height: '8px', borderRadius: '999px', background: 'rgba(0,0,0,0.06)', overflow: 'hidden' }}>
@@ -290,8 +290,8 @@ export default function Dashboard() {
                   background: budgetPercentage > 100
                     ? 'linear-gradient(90deg, #ef4444, #b91c1c)'
                     : budgetPercentage > 75
-                    ? 'linear-gradient(90deg, #f59e0b, #d97706)'
-                    : 'linear-gradient(90deg, #34d399, #059669)',
+                      ? 'linear-gradient(90deg, #f59e0b, #d97706)'
+                      : 'linear-gradient(90deg, #34d399, #059669)',
                 }} />
               </div>
               {budgetPercentage > 100 ? (
@@ -319,8 +319,8 @@ export default function Dashboard() {
               </p>
               <p style={{ fontSize: '12px', fontWeight: 500, color: '#6b7280' }}>
                 {dailyCompletion >= 80 ? "You're crushing your goals today! 🎉" :
-                 dailyCompletion >= 40 ? 'You are halfway to your daily targets 🚀' :
-                 'Every healthy meal counts! Start now 🌿'}
+                  dailyCompletion >= 40 ? 'You are halfway to your daily targets 🚀' :
+                    'Every healthy meal counts! Start now 🌿'}
               </p>
             </div>
 

@@ -42,10 +42,9 @@ export default function Navbar() {
 
   // Styling for active vs inactive nav links
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-      isActive
-        ? 'text-emerald-700 border border-emerald-500/15'
-        : 'text-zinc-500 border border-transparent hover:text-zinc-800 hover:bg-white/50'
+    `flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
+      ? 'text-emerald-700 border border-emerald-500/15'
+      : 'text-zinc-500 border border-transparent hover:text-zinc-800 hover:bg-white/50'
     }`;
 
   const activeBg = ({ isActive }) => ({

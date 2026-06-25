@@ -8,15 +8,15 @@ import { AlertTriangle, AlertCircle, Info, X, Bell } from 'lucide-react';
 const severityConfig = {
   critical: { color: '#ef4444', bg: 'rgba(254,226,226,0.85)', border: 'rgba(239,68,68,0.2)', Icon: AlertTriangle },
   moderate: { color: '#f59e0b', bg: 'rgba(254,243,199,0.85)', border: 'rgba(245,158,11,0.2)', Icon: AlertCircle },
-  info: {     color: '#3b82f6', bg: 'rgba(219,234,254,0.85)', border: 'rgba(59,130,246,0.2)', Icon: Info },
+  info: { color: '#3b82f6', bg: 'rgba(219,234,254,0.85)', border: 'rgba(59,130,246,0.2)', Icon: Info },
 };
 
 export default function AlertBanner({ alerts = [], onDismiss }) {
   if (!alerts.length) return null;
 
   return (
-    <div 
-      className="rounded-3xl p-6 transition-all duration-300" 
+    <div
+      className="rounded-3xl p-6 transition-all duration-300"
       style={{
         background: 'rgba(255,255,255,0.65)',
         backdropFilter: 'blur(24px)',
@@ -51,7 +51,7 @@ export default function AlertBanner({ alerts = [], onDismiss }) {
               }}
             >
               <div className="mt-0.5 shrink-0 bg-white/70 p-1.5 rounded-xl shadow-sm">
-                 <Icon size={14} style={{ color: config.color }} strokeWidth={2.5} />
+                <Icon size={14} style={{ color: config.color }} strokeWidth={2.5} />
               </div>
               <p className="text-[13px] font-semibold leading-snug flex-1" style={{ color: config.color }}>
                 {alert.message}

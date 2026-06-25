@@ -1,8 +1,8 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // Check if running in mock mode
-const isMock = !process.env.GEMINI_API_KEY || 
-               process.env.GEMINI_API_KEY === 'your-gemini-api-key';
+const isMock = !process.env.GEMINI_API_KEY ||
+  process.env.GEMINI_API_KEY === 'your-gemini-api-key';
 
 // Helper to generate realistic mock nutrients for Indian hostel food items
 const getMockNutrients = (foodText = '') => {
@@ -71,6 +71,15 @@ const getMockNutrients = (foodText = '') => {
     iron += count * 0.9;
     estimatedCost += count * 8;
     items.push(`${count} Egg(s)`);
+  }
+  if (text.includes('poha')) {
+    calories += 250;
+    protein += 4;
+    carbs += 45;
+    fat += 6;
+    iron += 2.5;
+    estimatedCost += 25;
+    items.push('Poha (Flattened Rice)');
   }
   if (text.includes('maggi') || text.includes('noodles') || text.includes('ramen')) {
     calories += 380;
