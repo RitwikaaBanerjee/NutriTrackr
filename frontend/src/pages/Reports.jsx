@@ -383,9 +383,9 @@ export default function Reports() {
                   <YAxis stroke="#a1a1aa" fontSize={12} fontWeight={600} tickLine={false} axisLine={false} />
                   <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} shared={false} />
                   <Legend wrapperStyle={{ paddingTop: '20px', fontWeight: 'bold', fontSize: '12px' }} />
-                  <Bar dataKey="protein" name="Protein" fill="#3b82f6" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="carbs" name="Carbs" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="fat" name="Fat" fill="#f59e0b" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="protein" name="Protein" fill="#3b82f6" radius={[6, 6, 0, 0]} cursor="pointer" />
+                  <Bar dataKey="carbs" name="Carbs" fill="#8b5cf6" radius={[6, 6, 0, 0]} cursor="pointer" />
+                  <Bar dataKey="fat" name="Fat" fill="#f59e0b" radius={[6, 6, 0, 0]} cursor="pointer" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
