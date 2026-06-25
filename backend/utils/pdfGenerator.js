@@ -206,15 +206,19 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
         d.severity === 'moderate' ? colors.moderate :
         colors.low;
 
-      // Severity badge
+      // Elegant deficiency listing
+      const nutrientName = d.nutrient.charAt(0).toUpperCase() + d.nutrient.slice(1).toLowerCase();
+      
       doc
         .font('Helvetica-Bold')
         .fontSize(10)
         .fillColor(severityColor)
-        .text(
-          `! ${d.nutrient.toUpperCase()} — ${d.percentage}% of recommended (${d.current}/${d.recommended}) [${d.severity}]`,
-          70
-        );
+        .text(`•  ${nutrientName}: `, 70, doc.y, { continued: true })
+        .font('Helvetica')
+        .fillColor(colors.text)
+        .text(`Currently at ${d.percentage}% of target `, { continued: true })
+        .fillColor('#94a3b8')
+        .text(`(${d.current} / ${d.recommended})`);
     }
   }
 
@@ -238,10 +242,15 @@ const generateReport = (userData, weeklyData, deficiencies, suggestions) => {
   } else {
     for (const s of suggestions) {
       doc
-        .font('Helvetica')
+        .font('Helvetica-Bold')
         .fontSize(10)
         .fillColor(colors.text)
-        .text(`• ${s.name} — Rs. ${s.estimatedCost} (${s.reason})`, 70);
+        .text(`•  ${s.name} `, 70, doc.y, { continued: true })
+        .font('Helvetica')
+        .fillColor('#64748b')
+        .text(`— Rs. ${s.estimatedCost} `, { continued: true })
+        .fillColor('#94a3b8')
+        .text(`(${s.reason})`);
     }
   }
 
