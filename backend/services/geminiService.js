@@ -6,7 +6,7 @@ const isMock = !process.env.GEMINI_API_KEY ||
 
 // Helper to generate realistic mock nutrients for Indian hostel food items
 const getMockNutrients = (foodText = '') => {
-  const text = foodText.toLowerCase();
+  const parts = foodText.toLowerCase().split(/,| and |&|\+/).map(s => s.trim()).filter(Boolean);
   let calories = 0;
   let protein = 0;
   let carbs = 0;
@@ -15,155 +15,137 @@ const getMockNutrients = (foodText = '') => {
   let estimatedCost = 0;
   const items = [];
 
-  if (text.includes('roti') || text.includes('chapati')) {
-    const count = (text.match(/\d+/g) || [2])[0];
-    const rotis = parseInt(count) || 2;
-    calories += rotis * 120;
-    protein += rotis * 3;
-    carbs += rotis * 22;
-    fat += rotis * 1;
-    iron += rotis * 0.8;
-    estimatedCost += rotis * 7;
-    items.push(`${rotis} Roti`);
-  }
-  if (text.includes('dal') || text.includes('daal') || text.includes('dhal') || text.includes('pulse') || text.includes('lentil')) {
-    calories += 150;
-    protein += 8;
-    carbs += 22;
-    fat += 3;
-    iron += 2.2;
-    estimatedCost += 20;
-    items.push('Dal (Lentil Soup)');
-  }
-  if (text.includes('rice') || text.includes('chawal')) {
-    calories += 200;
-    protein += 4;
-    carbs += 44;
-    fat += 0.5;
-    iron += 0.4;
-    estimatedCost += 15;
-    items.push('Steamed Rice');
-  }
-  if (text.includes('paneer')) {
-    calories += 260;
-    protein += 15;
-    carbs += 4;
-    fat += 21;
-    iron += 0.5;
-    estimatedCost += 70;
-    items.push('Paneer Sabzi');
-  }
-  if (text.includes('chicken') || text.includes('murgh')) {
-    calories += 310;
-    protein += 26;
-    carbs += 5;
-    fat += 18;
-    iron += 1.3;
-    estimatedCost += 90;
-    items.push('Chicken Curry');
-  }
-  if (text.includes('egg') || text.includes('anda')) {
-    const count = parseInt((text.match(/\d+/g) || [2])[0]) || 2;
-    calories += count * 75;
-    protein += count * 6;
-    carbs += count * 0.6;
-    fat += count * 5;
-    iron += count * 0.9;
-    estimatedCost += count * 8;
-    items.push(`${count} Egg(s)`);
-  }
-  if (text.includes('poha')) {
-    calories += 250;
-    protein += 4;
-    carbs += 45;
-    fat += 6;
-    iron += 2.5;
-    estimatedCost += 25;
-    items.push('Poha (Flattened Rice)');
-  }
-  if (text.includes('maggi') || text.includes('noodles') || text.includes('ramen')) {
-    calories += 380;
-    protein += 8;
-    carbs += 58;
-    fat += 14;
-    iron += 1.8;
-    estimatedCost += 20;
-    items.push('Maggi Instant Noodles');
-  }
-  if (text.includes('chai') || text.includes('tea')) {
-    calories += 60;
-    protein += 1;
-    carbs += 10;
-    fat += 2;
-    iron += 0.1;
-    estimatedCost += 10;
-    items.push('Chai (Indian Tea)');
-  }
-  if (text.includes('coffee')) {
-    calories += 80;
-    protein += 1.5;
-    carbs += 12;
-    fat += 2.5;
-    iron += 0.1;
-    estimatedCost += 15;
-    items.push('Coffee');
-  }
-  if (text.includes('milk') || text.includes('doodh')) {
-    calories += 150;
-    protein += 8;
-    carbs += 12;
-    fat += 8;
-    iron += 0.1;
-    estimatedCost += 25;
-    items.push('1 Glass of Milk');
-  }
-  if (text.includes('apple') || text.includes('seb')) {
-    calories += 95;
-    protein += 0.5;
-    carbs += 25;
-    fat += 0.3;
-    iron += 0.2;
-    estimatedCost += 20;
-    items.push('Apple');
-  }
-  if (text.includes('banana') || text.includes('kela')) {
-    calories += 105;
-    protein += 1.3;
-    carbs += 27;
-    fat += 0.4;
-    iron += 0.3;
-    estimatedCost += 10;
-    items.push('Banana');
-  }
-  if (text.includes('sandwich') || text.includes('bread')) {
-    calories += 250;
-    protein += 7;
-    carbs += 32;
-    fat += 10;
-    iron += 1.1;
-    estimatedCost += 30;
-    items.push('Vegetable Sandwich');
-  }
-  if (text.includes('samosa')) {
-    const count = parseInt((text.match(/\d+/g) || [1])[0]) || 1;
-    calories += count * 260;
-    protein += count * 4;
-    carbs += count * 32;
-    fat += count * 13;
-    iron += count * 0.9;
-    estimatedCost += count * 12;
-    items.push(`${count} Samosa`);
-  }
+  if (parts.length === 0) parts.push('standard hostel meal');
 
-  if (items.length === 0) {
-    calories = 320;
-    protein = 8;
-    carbs = 42;
-    fat = 10;
-    iron = 1.0;
-    estimatedCost = 35;
-    items.push(foodText || 'Standard Hostel Meal');
-  }
+  parts.forEach(part => {
+    let matched = false;
+
+    if (part.includes('roti') || part.includes('chapati') || part.includes('paratha') || part.includes('puri') || part.includes('naan')) {
+      const count = parseInt((part.match(/\d+/g) || [1])[0]) || 1;
+      const name = part.includes('paratha') ? 'Paratha' : part.includes('puri') ? 'Puri' : part.includes('naan') ? 'Naan' : 'Roti';
+      calories += count * 150;
+      protein += count * 4;
+      carbs += count * 25;
+      fat += count * 5;
+      iron += count * 1.0;
+      estimatedCost += count * 15;
+      items.push(`${count} ${name}`);
+      matched = true;
+    }
+    else if (part.includes('dal') || part.includes('daal') || part.includes('dhal') || part.includes('pulse') || part.includes('lentil')) {
+      calories += 150;
+      protein += 8;
+      carbs += 22;
+      fat += 3;
+      iron += 2.2;
+      estimatedCost += 20;
+      items.push('Dal (Lentil Soup)');
+      matched = true;
+    }
+    else if (part.includes('rice') || part.includes('chawal') || part.includes('biryani') || part.includes('pulao')) {
+      calories += 250;
+      protein += 5;
+      carbs += 50;
+      fat += 3;
+      iron += 0.8;
+      estimatedCost += 40;
+      items.push(part.includes('biryani') ? 'Biryani' : 'Rice');
+      matched = true;
+    }
+    else if (part.includes('paneer')) {
+      calories += 260;
+      protein += 15;
+      carbs += 4;
+      fat += 21;
+      iron += 0.5;
+      estimatedCost += 70;
+      items.push('Paneer Sabzi');
+      matched = true;
+    }
+    else if (part.includes('chicken') || part.includes('murgh')) {
+      calories += 310;
+      protein += 26;
+      carbs += 5;
+      fat += 18;
+      iron += 1.3;
+      estimatedCost += 90;
+      items.push('Chicken Curry');
+      matched = true;
+    }
+    else if (part.includes('egg') || part.includes('anda')) {
+      const count = parseInt((part.match(/\d+/g) || [2])[0]) || 2;
+      calories += count * 75;
+      protein += count * 6;
+      carbs += count * 0.6;
+      fat += count * 5;
+      iron += count * 0.9;
+      estimatedCost += count * 8;
+      items.push(`${count} Egg(s)`);
+      matched = true;
+    }
+    else if (part.includes('poha')) {
+      calories += 250;
+      protein += 4;
+      carbs += 45;
+      fat += 6;
+      iron += 2.5;
+      estimatedCost += 25;
+      items.push('Poha');
+      matched = true;
+    }
+    else if (part.includes('chole') || part.includes('chana') || part.includes('rajma')) {
+      calories += 220;
+      protein += 10;
+      carbs += 35;
+      fat += 4;
+      iron += 3.0;
+      estimatedCost += 30;
+      items.push(part.includes('rajma') ? 'Rajma' : 'Chole (Chickpea Curry)');
+      matched = true;
+    }
+    else if (part.includes('sabzi') || part.includes('aloo') || part.includes('bhindi')) {
+      calories += 180;
+      protein += 3;
+      carbs += 20;
+      fat += 10;
+      iron += 1.5;
+      estimatedCost += 25;
+      items.push('Vegetable Sabzi');
+      matched = true;
+    }
+    else if (part.includes('sweet') || part.includes('gulab') || part.includes('jamun') || part.includes('jalebi') || part.includes('rasgulla')) {
+      calories += 300;
+      protein += 3;
+      carbs += 55;
+      fat += 12;
+      iron += 0.5;
+      estimatedCost += 40;
+      items.push('Indian Sweet / Dessert');
+      matched = true;
+    }
+    else if (part.includes('maggi') || part.includes('noodles')) {
+      calories += 380;
+      protein += 8;
+      carbs += 58;
+      fat += 14;
+      iron += 1.8;
+      estimatedCost += 20;
+      items.push('Instant Noodles');
+      matched = true;
+    }
+
+    if (!matched) {
+      // For any unrecognized item separated by a comma, give it generic values
+      calories += 150;
+      protein += 4;
+      carbs += 20;
+      fat += 5;
+      iron += 0.5;
+      estimatedCost += 25;
+      // Capitalize the unknown part
+      items.push(part.charAt(0).toUpperCase() + part.slice(1));
+    }
+  });
 
   return {
     calories,
