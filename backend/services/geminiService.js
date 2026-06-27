@@ -174,9 +174,9 @@ const analyzeTextMeal = async (foodText) => {
 
   try {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-    const prompt = `You are a nutrition expert specializing in Indian cuisine. Analyze this Indian hostel food and return ONLY a valid JSON object (no markdown, no code blocks). The input may contain Hindi, Hinglish, or regional terms (e.g., 'poha', 'daal', 'chawal', 'roti', 'sabzi'). Identify all items accurately despite spelling variations. Food: "${foodText}". Return: { "calories": number, "protein": number (grams), "carbs": number (grams), "fat": number (grams), "iron": number (mg), "estimatedCost": number (INR), "items": ["item1", "item2"] }. Be realistic about portion sizes for a college student.`;
+    const prompt = `You are a nutrition expert specializing in Indian cuisine. Analyze this Indian hostel food and return ONLY a valid JSON object (no markdown, no code blocks). The input may contain multiple comma-separated items and Hindi/regional terms (e.g., 'poha', 'daal', 'chawal', 'roti', 'sabzi'). You MUST identify and extract every single food item mentioned accurately. Food: "${foodText}". Return: { "calories": number, "protein": number (grams), "carbs": number (grams), "fat": number (grams), "iron": number (mg), "estimatedCost": number (INR), "items": ["item1", "item2"] }. Be realistic about portion sizes.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
@@ -208,9 +208,9 @@ const analyzeImageMeal = async (imageBuffer, mimeType) => {
 
   try {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-    const prompt = `You are a nutrition expert specializing in Indian cuisine. Look at this food image and: 1) Identify all food items visible (including regional Indian foods like daal, roti, sabzi, poha) 2) Estimate quantities 3) Calculate approximate nutrients. Return ONLY valid JSON (no markdown): { "calories": number, "protein": number (grams), "carbs": number (grams), "fat": number (grams), "iron": number (mg), "estimatedCost": number (INR), "items": ["item1", "item2"], "description": "brief description of food" }. Assume Indian hostel context.`;
+    const prompt = `You are a nutrition expert specializing in Indian cuisine. Look closely at this food image and: 1) Identify ALL food items visible on the plate (e.g. daal, roti, rice, multiple sabzis, salad, sweets). Do not group them into one item. 2) Estimate quantities for each. 3) Calculate approximate nutrients for the whole meal. Return ONLY valid JSON (no markdown): { "calories": number, "protein": number (grams), "carbs": number (grams), "fat": number (grams), "iron": number (mg), "estimatedCost": number (INR), "items": ["item1", "item2", "item3"], "description": "brief description of food" }. Assume Indian hostel context.`;
 
     const imagePart = {
       inlineData: {
