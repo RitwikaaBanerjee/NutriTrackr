@@ -131,9 +131,7 @@ export default function Login() {
           <div className="relative z-10">
             {/* ── Brand ── */}
             <div className="flex items-center gap-4 mb-12" style={{ marginBottom: '12px' }}>
-              <div className="w-12 h-12 rounded-[14px] flex items-center justify-center shrink-0 shadow-sm" style={{ background: '#059669' }}>
-                <LeafLogo />
-              </div>
+              <img src="/favicon.png" alt="NutriTrack Logo" className="w-12 h-12 rounded-[14px] shadow-sm shrink-0 object-cover" />
               <div className="flex flex-col justify-center">
                 <span className="text-[26px] font-bold text-zinc-900 tracking-tight leading-none mb-1.5">
                   Nutri<span className="text-[#059669]">Trackr</span>

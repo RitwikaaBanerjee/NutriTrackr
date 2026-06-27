@@ -65,15 +65,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
         {/* ─── Logo ─── */}
         <NavLink to="/dashboard" className="flex items-center gap-3 group">
-          <span
-            className="inline-flex items-center justify-center w-10 h-10 rounded-xl text-lg group-hover:scale-105 transition-transform duration-300"
-            style={{
-              background: 'linear-gradient(135deg, #34d399 0%, #06b6d4 50%, #818cf8 100%)',
-              boxShadow: '0 4px 14px rgba(52,211,153,0.3)',
-            }}
-          >
-            🍽️
-          </span>
+          <img 
+            src="/favicon.png" 
+            alt="NutriTrack Logo" 
+            className="w-10 h-10 rounded-xl group-hover:scale-105 transition-transform duration-300 object-cover shadow-sm" 
+          />
           <span className="text-xl font-bold tracking-tight font-display" style={{ color: '#18181b' }}>
             Nutri<span style={{
               background: 'linear-gradient(135deg, #059669, #0891b2)',
