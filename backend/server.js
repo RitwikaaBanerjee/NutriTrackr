@@ -26,16 +26,12 @@ const PORT = process.env.PORT || 5000;
 
 // ─── Middleware ───
 
-// Enable CORS for the frontend dev server
+// Enable CORS for the frontend dev server and Vercel production
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    // Allow any localhost origin (e.g. 5173, 5174, 3000)
-    if (/^http:\/\/localhost:\d+$/.test(origin) || /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)) {
-      return callback(null, true);
-    }
-    callback(new Error('Not allowed by CORS'));
+    // For Vercel deployment, it's safest to allow all origins initially,
+    // or you can restrict this later to your specific Vercel frontend domain.
+    return callback(null, true);
   },
   credentials: true,
 }));
@@ -83,11 +79,17 @@ app.use((err, req, res, next) => {
 });
 
 // ─── Start Server ───
-// Connect to MongoDB first, then start listening
-connectDB().then(() => {
+// Connect to MongoDB (Mongoose queues operations until connected)
+connectDB();
+
+// Only listen on a port if we are NOT in a Vercel serverless environment
+if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`\n🚀 NutriTrack server running on http://localhost:${PORT}`);
     console.log(`📡 API available at http://localhost:${PORT}/api`);
     console.log(`❤️  Health check: http://localhost:${PORT}/api/health\n`);
   });
-});
+}
+
+// Export for Vercel Serverless
+module.exports = app;
